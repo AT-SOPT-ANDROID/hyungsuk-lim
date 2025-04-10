@@ -1,6 +1,5 @@
 package org.sopt.at
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -38,7 +37,15 @@ class SignUpActivity : ComponentActivity() {
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpView(modifier = Modifier.padding(innerPadding))
+                    val signUp = { id: String, password: String ->
+                        val intent = Intent().apply {
+                            putExtra("id", id)
+                            putExtra("password", password)
+                        }
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
+                    SignUpView(modifier = Modifier.padding(innerPadding), signUp)
                 }
             }
         }
@@ -48,12 +55,11 @@ class SignUpActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun SignUpPreview() {
-    SignUpView(modifier = Modifier)
+    SignUpView(modifier = Modifier, signUp = { _, _ -> })
 }
 
 @Composable
-fun SignUpView(modifier: Modifier) {
-    val context = LocalContext.current
+fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
     var text by remember { mutableStateOf("") }
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -86,11 +92,7 @@ fun SignUpView(modifier: Modifier) {
                         text = ""
                     } else {
                         password = text
-                        val intent = Intent(context, SignInActivity::class.java).apply {
-                            putExtra("id", id)
-                            putExtra("password", password)
-                        }
-                        context.startActivity(intent)
+                        signUp(id, password)
                     }
                 },
                 modifier = Modifier.width(480.dp),

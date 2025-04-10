@@ -1,5 +1,6 @@
 package org.sopt.at
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -40,20 +43,40 @@ import kotlin.math.sin
 
 class SignInActivity : ComponentActivity() {
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private val idState = mutableStateOf("")
+    private val pwState = mutableStateOf("")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                val id = result.data?.getStringExtra("id")
-                val pwd = result.data?.getStringExtra("password")
+                if (result.resultCode == Activity.RESULT_OK) {
+                    idState.value = result.data?.getStringExtra("id") ?: ""
+                    pwState.value = result.data?.getStringExtra("password") ?: ""
+                }
             }
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignInView(Modifier.padding(innerPadding), {
+                    val context = LocalContext.current
+                    val onClickSignUp = {
                         resultLauncher.launch(Intent(this, SignUpActivity::class.java))
-                    })
+                    }
+                    val onClickSignIn: (String, String) -> Unit = { id, password ->
+                        if (id == idState.value && password == pwState.value) {
+                            val intent = Intent(context, MyActivity::class.java).apply {
+                                flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
+                            context.startActivity(intent)
+                            finish()
+                        }
+                    }
+                    SignInView(
+                        Modifier.padding(innerPadding),
+                        onClickSignUp,
+                        onClickSignIn,
+                    )
                 }
             }
         }
@@ -61,7 +84,11 @@ class SignInActivity : ComponentActivity() {
 }
 
 @Composable
-fun SignInView(modifier: Modifier, onClickSignUp: () -> Unit) {
+fun SignInView(
+    modifier: Modifier,
+    onClickSignUp: () -> Unit,
+    onClickSignIn: (String, String) -> Unit,
+) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     Column(
@@ -83,7 +110,7 @@ fun SignInView(modifier: Modifier, onClickSignUp: () -> Unit) {
             SignInInput(id, "아이디", { id = it }, Modifier.padding(bottom = 12.dp))
             SignInInput(password, "비밀번호", { password = it }, Modifier.padding(bottom = 12.dp))
             Button(
-                onClick = {},
+                onClick = { onClickSignIn(id, password) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
