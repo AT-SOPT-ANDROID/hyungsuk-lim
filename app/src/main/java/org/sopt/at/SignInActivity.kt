@@ -1,10 +1,14 @@
 package org.sopt.at
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,15 +36,24 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+import kotlin.math.sin
 
 class SignInActivity : ComponentActivity() {
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val id = result.data?.getStringExtra("id")
+                val pwd = result.data?.getStringExtra("password")
+            }
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignInView(Modifier.padding(innerPadding))
+                    SignInView(Modifier.padding(innerPadding), {
+                        resultLauncher.launch(Intent(this, SignUpActivity::class.java))
+                    })
                 }
             }
         }
@@ -48,7 +61,7 @@ class SignInActivity : ComponentActivity() {
 }
 
 @Composable
-fun SignInView(modifier: Modifier) {
+fun SignInView(modifier: Modifier, onClickSignUp: () -> Unit) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     Column(
@@ -78,7 +91,7 @@ fun SignInView(modifier: Modifier) {
             ) {
                 Text("로그인하기", color = Color.LightGray)
             }
-            SignInBottom()
+            SignInBottom(onClickSignUp)
         }
     }
 }
@@ -102,11 +115,12 @@ fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, mo
         } else {
             VisualTransformation.None
         },
+        singleLine = true
     )
 }
 
 @Composable
-fun SignInBottom() {
+fun SignInBottom(onClickSignUp: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,6 +132,11 @@ fun SignInBottom() {
         Text("|")
         Text("비밀번호 찾기")
         Text("|")
-        Text("회원가입")
+        Text(
+            "회원가입",
+            Modifier.clickable(
+                onClick = onClickSignUp
+            )
+        )
     }
 }

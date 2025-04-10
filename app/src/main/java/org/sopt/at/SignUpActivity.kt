@@ -1,5 +1,7 @@
 package org.sopt.at
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +38,7 @@ class SignUpActivity : ComponentActivity() {
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpView(modifier = Modifier.padding(innerPadding), "아이디")
+                    SignUpView(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -49,8 +52,12 @@ fun SignUpPreview() {
 }
 
 @Composable
-fun SignUpView(modifier: Modifier, label: String = "아이디") {
+fun SignUpView(modifier: Modifier) {
+    val context = LocalContext.current
     var text by remember { mutableStateOf("") }
+    var id by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var step by remember { mutableStateOf("아이디") }
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -59,7 +66,7 @@ fun SignUpView(modifier: Modifier, label: String = "아이디") {
     ) {
         Column {
             Text(
-                label + "를 입력해주세요.",
+                step + "를 입력해주세요.",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -68,15 +75,29 @@ fun SignUpView(modifier: Modifier, label: String = "아이디") {
             TextField(
                 value = text,
                 onValueChange = { text = it },
-                placeholder = { Text("아이디") }
+                placeholder = { Text("아이디") },
+                singleLine = true
             )
-        }
-        Button(
-            onClick = {},
-            modifier = Modifier.width(480.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text("다음", fontSize = 16.sp, color = Color.White)
+            Button(
+                onClick = {
+                    if (step == "아이디") {
+                        step = "비밀번호"
+                        id = text
+                        text = ""
+                    } else {
+                        password = text
+                        val intent = Intent(context, SignInActivity::class.java).apply {
+                            putExtra("id", id)
+                            putExtra("password", password)
+                        }
+                        context.startActivity(intent)
+                    }
+                },
+                modifier = Modifier.width(480.dp),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("다음", fontSize = 16.sp, color = Color.White)
+            }
         }
     }
 }
