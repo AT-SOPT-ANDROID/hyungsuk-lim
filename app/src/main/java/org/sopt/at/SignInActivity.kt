@@ -1,8 +1,6 @@
 package org.sopt.at
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,30 +18,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +45,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
-import kotlin.math.sin
 
 class SignInActivity : ComponentActivity() {
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
@@ -68,7 +56,7 @@ class SignInActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
+                if (result.resultCode == RESULT_OK) {
                     idState.value = result.data?.getStringExtra("id") ?: ""
                     pwState.value = result.data?.getStringExtra("password") ?: ""
                 }
@@ -76,20 +64,34 @@ class SignInActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
+                val scope = rememberCoroutineScope()
+                val snackbarHostState = remember { SnackbarHostState() }
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize(),
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackbarHostState)
+                    },
                 ) { innerPadding ->
                     val context = LocalContext.current
                     val onClickSignUp = {
                         resultLauncher.launch(Intent(this, SignUpActivity::class.java))
                     }
                     val onClickSignIn: (String, String) -> Unit = { id, password ->
-                        if (id == idState.value && password == pwState.value) {
+                        if (id != idState.value) {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("아이디가 일치하지 않습니다.")
+                            }
+                        } else if (password != pwState.value) {
+                            scope.launch {
+                                snackbarHostState.showSnackbar("비밀번호가 일치하지 않습니다.")
+                            }
+                        } else {
                             val intent = Intent(context, MyActivity::class.java).apply {
                                 flags =
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             }
+                            intent.putExtra("userId", id)
                             context.startActivity(intent)
                             finish()
                         }
@@ -121,13 +123,14 @@ fun SignInView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier.width(440.dp)
+            modifier = modifier.width(440.dp).padding(horizontal = 4.dp)
         ) {
             Text(
                 "TVING ID 로그인",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp),
+                color = Color.White
             )
             SignInInput(id, "아이디", { id = it }, Modifier.padding(bottom = 12.dp))
             SignInInput(password, "비밀번호", { password = it }, Modifier.padding(bottom = 12.dp))
