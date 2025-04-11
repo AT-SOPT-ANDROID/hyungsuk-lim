@@ -1,8 +1,10 @@
 package org.sopt.at
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
@@ -13,10 +15,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -30,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,32 +78,53 @@ fun SignUpPreview() {
 
 @Composable
 fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
-    var text by remember { mutableStateOf("") }
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var step by remember { mutableStateOf("아이디") }
     var isError by remember { mutableStateOf(false) }
-    val isValidId = text.matches(Regex("^[a-z0-9]{6,12}$")) &&
-            text.contains(Regex("[a-z]"))
-    val isValidPassword = text.length in 8..15 &&
-            text.contains(Regex("[A-Za-z]")) &&
-            text.contains(Regex("[0-9]")) &&
-            text.contains(Regex("[^A-Za-z0-9]"))
+    val isValidId = id.matches(Regex("^[a-z0-9]{6,12}$")) &&
+            id.contains(Regex("[a-z]"))
+    val isValidPassword = password.length in 8..15 &&
+            password.contains(Regex("[A-Za-z]")) &&
+            password.contains(Regex("[0-9]")) &&
+            password.contains(Regex("[^A-Za-z0-9]"))
+    val activity = LocalActivity.current
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = Color.Black),
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    if (step == "비밀번호") {
+                        isError = false
+                        step = "아이디"
+                    } else {
+                        activity?.finish()
+                    }
+                },
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = "뒤로가기",
+                    tint = Color.White
+                )
+            }
+        }
         if (step == "아이디") {
             IdInputView(
-                text = text,
-                onValueChange = { text = it },
+                text = id,
+                onValueChange = { id = it },
                 onNext = {
                     if (isValidId) {
-                        id = text
-                        text = ""
                         isError = false
                         step = "비밀번호"
                     } else {
@@ -105,11 +135,10 @@ fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
             )
         } else if (step == "비밀번호") {
             PasswordInputView(
-                text = text,
-                onValueChange = { text = it },
+                text = password,
+                onValueChange = { password = it },
                 onSignUp = {
                     if (isValidPassword) {
-                        password = text
                         signUp(id, password)
                     } else {
                         isError = true
@@ -120,7 +149,6 @@ fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
         }
     }
 }
-
 
 @Composable
 fun IdInputView(
@@ -146,7 +174,7 @@ fun IdInputView(
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(2.dp))
                 .background(color = Color.DarkGray)
                 .height(52.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -154,7 +182,7 @@ fun IdInputView(
                 unfocusedBorderColor = Color.Transparent,
                 cursorColor = Color.White,
             ),
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(2.dp),
         )
         Text(
             "영문 소문자 또는 영문 소문자, 숫자 조합 6~12자리",
@@ -167,8 +195,11 @@ fun IdInputView(
         )
         Button(
             onClick = onNext,
-            modifier = Modifier.width(480.dp),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(2.dp))
+                .height(52.dp),
+            shape = RoundedCornerShape(2.dp),
             enabled = text != "",
             colors = ButtonDefaults.buttonColors(
                 disabledContainerColor = Color.Black,
@@ -207,7 +238,7 @@ fun PasswordInputView(
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(2.dp))
                 .background(color = Color.DarkGray)
                 .height(52.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -215,7 +246,7 @@ fun PasswordInputView(
                 unfocusedBorderColor = Color.Transparent,
                 cursorColor = Color.White,
             ),
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(2.dp),
         )
         Text(
             "영문, 숫자, 특수문자(~!@#$&^&*) 조합 8~15자리",
@@ -228,8 +259,10 @@ fun PasswordInputView(
         )
         Button(
             onClick = onSignUp,
-            modifier = Modifier.width(480.dp),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp),
+            shape = RoundedCornerShape(2.dp),
             enabled = text != "",
             colors = ButtonDefaults.buttonColors(
                 disabledContainerColor = Color.Black,
