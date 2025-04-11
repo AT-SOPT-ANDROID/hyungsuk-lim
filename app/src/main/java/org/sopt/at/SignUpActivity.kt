@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -196,7 +197,7 @@ fun IdInputView(
         OutlinedTextField(
             value = text,
             onValueChange = onValueChange,
-            placeholder = { Text("아이디") },
+            placeholder = { Text("아이디", color = Color.LightGray) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -209,6 +210,7 @@ fun IdInputView(
                 cursorColor = Color.White,
             ),
             shape = RoundedCornerShape(2.dp),
+            textStyle = TextStyle(color = Color.White)
         )
         Text(
             "영문 소문자 또는 영문 소문자, 숫자 조합 6~12자리",
@@ -266,7 +268,7 @@ fun PasswordInputView(
         OutlinedTextField(
             value = text,
             onValueChange = onValueChange,
-            placeholder = { Text("비밀번호") },
+            placeholder = { Text("비밀번호", color = Color.LightGray) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -279,6 +281,7 @@ fun PasswordInputView(
                 cursorColor = Color.White,
             ),
             shape = RoundedCornerShape(2.dp),
+            textStyle = TextStyle(color = Color.White),
             trailingIcon =
                 {
                     IconButton(onClick = { isVisible = !isVisible }) {
@@ -308,7 +311,7 @@ fun PasswordInputView(
             },
             fontSize = 12.sp
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(5f))
         Button(
             onClick = onSignUp,
             modifier = Modifier
@@ -326,5 +329,6 @@ fun PasswordInputView(
         ) {
             Text("다음", fontSize = 14.sp)
         }
+        Spacer(modifier = Modifier.weight(1f))
     }
 }

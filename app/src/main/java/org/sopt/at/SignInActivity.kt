@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -165,6 +166,7 @@ fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, mo
             .background(color = Color.DarkGray)
             .height(52.dp),
         placeholder = { Text(label, color = Color.LightGray) },
+        textStyle = TextStyle(color = Color.White),
         trailingIcon = if (label == "비밀번호") {
             {
                 IconButton(onClick = { isVisible = !isVisible }) {
