@@ -3,7 +3,6 @@ package org.sopt.at
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
@@ -41,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
@@ -56,40 +54,84 @@ class SignUpActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                 ) { innerPadding ->
-                    val signUp = { id: String, password: String ->
-                        val intent = Intent().apply {
-                            putExtra("id", id)
-                            putExtra("password", password)
-                        }
-                        setResult(RESULT_OK, intent)
-                        finish()
+                    var step by remember { mutableStateOf("아이디") }
+                    var isError by remember { mutableStateOf(false) }
+                    val isValidId = { id: String ->
+                        id.matches(Regex("^[a-z0-9]{6,12}$")) &&
+                                id.contains(Regex("[a-z]"))
                     }
-                    SignUpView(modifier = Modifier.padding(innerPadding), signUp)
+                    val isValidPassword = { password: String ->
+                        password.length in 8..15 &&
+                                password.contains(Regex("[A-Za-z]")) &&
+                                password.contains(Regex("[0-9]")) &&
+                                password.contains(Regex("[^A-Za-z0-9]"))
+                    }
+                    val onNext = { id: String ->
+                        if (isValidId(id)) {
+                            isError = false
+                            step = "비밀번호"
+                        } else {
+                            isError = true
+                        }
+                    }
+                    val signUp = { id: String, password: String ->
+                        if (isValidPassword(password)) {
+                            val intent = Intent().apply {
+                                putExtra("id", id)
+                                putExtra("password", password)
+                            }
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } else {
+                            isError = true
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                    ) {
+                        IconButton(
+                            onClick = {
+                                if (step == "비밀번호") {
+                                    isError = false
+                                    step = "아이디"
+                                } else {
+                                    finish()
+                                }
+                            },
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                contentDescription = "뒤로가기",
+                                tint = Color.White
+                            )
+                        }
+                    }
+                    SignUpView(
+                        modifier = Modifier.padding(innerPadding),
+                        onNext,
+                        signUp,
+                        step,
+                        isError
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun SignUpPreview() {
-    SignUpView(modifier = Modifier, signUp = { _, _ -> })
-}
-
-@Composable
-fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
+fun SignUpView(
+    modifier: Modifier,
+    onNext: (String) -> Unit,
+    signUp: (String, String) -> Unit,
+    step: String,
+    isError: Boolean
+) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var step by remember { mutableStateOf("아이디") }
-    var isError by remember { mutableStateOf(false) }
-    val isValidId = id.matches(Regex("^[a-z0-9]{6,12}$")) &&
-            id.contains(Regex("[a-z]"))
-    val isValidPassword = password.length in 8..15 &&
-            password.contains(Regex("[A-Za-z]")) &&
-            password.contains(Regex("[0-9]")) &&
-            password.contains(Regex("[^A-Za-z0-9]"))
-    val activity = LocalActivity.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -97,54 +139,19 @@ fun SignUpView(modifier: Modifier, signUp: (String, String) -> Unit) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-        ) {
-            IconButton(
-                onClick = {
-                    if (step == "비밀번호") {
-                        isError = false
-                        step = "아이디"
-                    } else {
-                        activity?.finish()
-                    }
-                },
-                modifier = Modifier.size(48.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "뒤로가기",
-                    tint = Color.White
-                )
-            }
-        }
+
         if (step == "아이디") {
             IdInputView(
                 text = id,
                 onValueChange = { id = it },
-                onNext = {
-                    if (isValidId) {
-                        isError = false
-                        step = "비밀번호"
-                    } else {
-                        isError = true
-                    }
-                },
+                onNext = { onNext(id) },
                 isError = isError
             )
         } else if (step == "비밀번호") {
             PasswordInputView(
                 text = password,
                 onValueChange = { password = it },
-                onSignUp = {
-                    if (isValidPassword) {
-                        signUp(id, password)
-                    } else {
-                        isError = true
-                    }
-                },
+                onSignUp = { signUp(id, password) },
                 isError = isError
             )
         }
@@ -159,14 +166,17 @@ fun IdInputView(
     isError: Boolean
 ) {
     Column(
-        modifier = Modifier.width(480.dp)
+        modifier = Modifier
+            .width(480.dp)
+            .padding(horizontal = 4.dp)
     ) {
         Text(
             "아이디를 입력해주세요.",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(bottom = 36.dp)
+                .padding(bottom = 36.dp),
+            color = Color.White
         )
         OutlinedTextField(
             value = text,
@@ -226,14 +236,17 @@ fun PasswordInputView(
 ) {
     var isVisible by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.width(440.dp)
+        modifier = Modifier
+            .width(440.dp)
+            .padding(horizontal = 4.dp)
     ) {
         Text(
             "비밀번호를 입력해주세요.",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(bottom = 36.dp)
+                .padding(bottom = 36.dp),
+            color = Color.White
         )
         OutlinedTextField(
             value = text,
