@@ -26,11 +26,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
 class SignUpActivity : ComponentActivity() {
@@ -50,9 +54,14 @@ class SignUpActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
+                val scope = rememberCoroutineScope()
+                val snackbarHostState = remember { SnackbarHostState() }
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackbarHostState)
+                    },
                 ) { innerPadding ->
                     var step by remember { mutableStateOf("아이디") }
                     var isError by remember { mutableStateOf(false) }
@@ -66,15 +75,18 @@ class SignUpActivity : ComponentActivity() {
                                 password.contains(Regex("[0-9]")) &&
                                 password.contains(Regex("[^A-Za-z0-9]"))
                     }
-                    val onNext = { id: String ->
+                    val onNext: (String) -> Unit = { id: String ->
                         if (isValidId(id)) {
                             isError = false
                             step = "비밀번호"
                         } else {
                             isError = true
+                            scope.launch {
+                                snackbarHostState.showSnackbar("아이디는 영문 소문자 또는 영문 소문자, 숫자 조합 6~12자리입니다.")
+                            }
                         }
                     }
-                    val signUp = { id: String, password: String ->
+                    val signUp: (String, String) -> Unit = { id: String, password: String ->
                         if (isValidPassword(password)) {
                             val intent = Intent().apply {
                                 putExtra("id", id)
@@ -84,6 +96,9 @@ class SignUpActivity : ComponentActivity() {
                             finish()
                         } else {
                             isError = true
+                            scope.launch {
+                                snackbarHostState.showSnackbar("비밀번호는 영문, 숫자, 특수문자(~!@#\$&^&*) 조합 8~15자리입니다.")
+                            }
                         }
                     }
                     Column(
@@ -111,10 +126,10 @@ class SignUpActivity : ComponentActivity() {
                     }
                     SignUpView(
                         modifier = Modifier.padding(innerPadding),
-                        onNext,
-                        signUp,
-                        step,
-                        isError
+                        onNext = onNext,
+                        signUp = signUp,
+                        step = step,
+                        isError = isError
                     )
                 }
             }
