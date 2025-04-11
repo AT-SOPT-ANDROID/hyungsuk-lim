@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -164,6 +165,14 @@ fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, mo
         trailingIcon = if (label == "비밀번호") {
             {
                 IconButton(onClick = { isVisible = !isVisible }) {
+                    Icon(
+                        painter = painterResource(
+                            if (isVisible) R.drawable.baseline_remove_red_eye_24
+                            else R.drawable.baseline_visibility_off_24
+                        ),
+                        contentDescription = "",
+                        tint = Color.LightGray
+                    )
                 }
             }
         } else null,
