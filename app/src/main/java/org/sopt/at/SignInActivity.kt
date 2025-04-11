@@ -12,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,6 +45,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
@@ -124,7 +126,9 @@ fun SignInView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier.width(440.dp).padding(horizontal = 4.dp)
+            modifier = modifier
+                .width(440.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Text(
                 "TVING ID 로그인",
@@ -135,22 +139,34 @@ fun SignInView(
             )
             SignInInput(id, "아이디", { id = it }, Modifier.padding(bottom = 12.dp))
             SignInInput(password, "비밀번호", { password = it }, Modifier.padding(bottom = 12.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Button(
                 onClick = { onClickSignIn(id, password) },
                 enabled = id != "" && password != "",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 8.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .height(52.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     disabledContainerColor = Color.Gray,
                     containerColor = Color.Red
                 )
             ) {
-                Text("로그인하기", color = Color.LightGray)
+                Text("로그인하기", color = Color.LightGray, fontSize = 16.sp)
             }
+            Spacer(modifier = Modifier.height(12.dp))
             SignInBottom(onClickSignUp)
         }
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            "이 사이트는 Google reCAPTCHA로 보호되며,\n" +
+                    "Google 개인정보 처리방침과 서비스 약관이 적용됩니다.",
+            fontSize = 12.sp,
+            color = Color.DarkGray,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

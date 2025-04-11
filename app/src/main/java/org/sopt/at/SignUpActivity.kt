@@ -184,7 +184,7 @@ fun IdInputView(
     Column(
         modifier = Modifier
             .width(480.dp)
-            .padding(horizontal = 4.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Text(
             "아이디를 입력해주세요.",
@@ -255,7 +255,7 @@ fun PasswordInputView(
     Column(
         modifier = Modifier
             .width(440.dp)
-            .padding(horizontal = 4.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Text(
             "비밀번호를 입력해주세요.",
