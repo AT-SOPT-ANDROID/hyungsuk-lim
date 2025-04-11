@@ -2,6 +2,7 @@ package org.sopt.at
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,19 +11,35 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -31,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -57,7 +75,10 @@ class SignInActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                ) { innerPadding ->
                     val context = LocalContext.current
                     val onClickSignUp = {
                         resultLauncher.launch(Intent(this, SignUpActivity::class.java))
@@ -111,10 +132,15 @@ fun SignInView(
             SignInInput(password, "비밀번호", { password = it }, Modifier.padding(bottom = 12.dp))
             Button(
                 onClick = { onClickSignIn(id, password) },
+                enabled = id != "" && password != "",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = Color.Gray,
+                    containerColor = Color.Red
+                )
             ) {
                 Text("로그인하기", color = Color.LightGray)
             }
@@ -126,10 +152,14 @@ fun SignInView(
 @Composable
 fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, modifier: Modifier) {
     var isVisible by remember { mutableStateOf(false) }
-    TextField(
+    OutlinedTextField(
         value = text,
         onValueChange = onValueChange,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = Color.DarkGray)
+            .height(52.dp),
         placeholder = { Text(label, color = Color.LightGray) },
         trailingIcon = if (label == "비밀번호") {
             {
@@ -142,7 +172,13 @@ fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, mo
         } else {
             VisualTransformation.None
         },
-        singleLine = true
+        singleLine = true,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = Color.White,
+            unfocusedBorderColor = Color.Transparent,
+            cursorColor = Color.White,
+        ),
+        shape = RoundedCornerShape(4.dp),
     )
 }
 
@@ -155,15 +191,16 @@ fun SignInBottom(onClickSignUp: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("아이디 찾기")
-        Text("|")
-        Text("비밀번호 찾기")
-        Text("|")
+        Text("아이디 찾기", color = Color.LightGray)
+        Text("|", color = Color.Gray)
+        Text("비밀번호 찾기", color = Color.LightGray)
+        Text("|", color = Color.Gray)
         Text(
             "회원가입",
             Modifier.clickable(
                 onClick = onClickSignUp
-            )
+            ),
+            color = Color.LightGray
         )
     }
 }
