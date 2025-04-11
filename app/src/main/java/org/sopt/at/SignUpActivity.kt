@@ -1,6 +1,5 @@
 package org.sopt.at
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +10,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -38,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -161,7 +159,7 @@ fun IdInputView(
     isError: Boolean
 ) {
     Column(
-        modifier = Modifier.width(440.dp)
+        modifier = Modifier.width(480.dp)
     ) {
         Text(
             "아이디를 입력해주세요.",
@@ -181,7 +179,7 @@ fun IdInputView(
                 .background(color = Color.DarkGray)
                 .height(52.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.White,
+                focusedBorderColor = Color.LightGray,
                 unfocusedBorderColor = Color.Transparent,
                 cursorColor = Color.White,
             ),
@@ -196,6 +194,7 @@ fun IdInputView(
             },
             fontSize = 12.sp
         )
+        Spacer(modifier = Modifier.weight(5f))
         Button(
             onClick = onNext,
             modifier = Modifier
@@ -212,8 +211,9 @@ fun IdInputView(
             ),
             border = BorderStroke(0.5.dp, Color.Gray)
         ) {
-            Text("다음", fontSize = 16.sp)
+            Text("다음", fontSize = 14.sp)
         }
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
@@ -246,7 +246,7 @@ fun PasswordInputView(
                 .background(color = Color.DarkGray)
                 .height(52.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.White,
+                focusedBorderColor = Color.LightGray,
                 unfocusedBorderColor = Color.Transparent,
                 cursorColor = Color.White,
             ),
@@ -280,6 +280,7 @@ fun PasswordInputView(
             },
             fontSize = 12.sp
         )
+        Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = onSignUp,
             modifier = Modifier
@@ -295,7 +296,7 @@ fun PasswordInputView(
             ),
             border = BorderStroke(0.5.dp, Color.Gray)
         ) {
-            Text("다음", fontSize = 16.sp)
+            Text("다음", fontSize = 14.sp)
         }
     }
 }
