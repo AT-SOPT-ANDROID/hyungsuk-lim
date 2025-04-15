@@ -16,12 +16,15 @@ import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 class MyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userId = intent.getStringExtra("userId") ?: ""
+        val userId = intent.getStringExtra("userId").orEmpty()
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyView(Modifier.padding(innerPadding), userId)
+                    MyView(
+                        modifier = Modifier.padding(innerPadding),
+                        userId = userId
+                    )
                 }
             }
         }
@@ -29,7 +32,10 @@ class MyActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyView(modifier: Modifier, userId: String) {
+fun MyView(
+    modifier: Modifier = Modifier,
+    userId: String
+) {
     Column(modifier = modifier) {
         Text(userId)
     }
