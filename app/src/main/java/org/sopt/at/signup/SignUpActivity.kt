@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -188,7 +189,7 @@ fun IdInputView(
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            "아이디를 입력해주세요.",
+            text = stringResource(R.string.sign_up_id_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -198,7 +199,12 @@ fun IdInputView(
         OutlinedTextField(
             value = text,
             onValueChange = onValueChange,
-            placeholder = { Text("아이디", color = Color.LightGray) },
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.id_text),
+                    color = Color.LightGray
+                )
+            },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -214,7 +220,7 @@ fun IdInputView(
             textStyle = TextStyle(color = Color.White)
         )
         Text(
-            "영문 소문자 또는 영문 소문자, 숫자 조합 6~12자리",
+            text = stringResource(R.string.id_description),
             color = if (isError) {
                 Color.Red
             } else {
@@ -259,7 +265,7 @@ fun PasswordInputView(
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            "비밀번호를 입력해주세요.",
+            text = stringResource(R.string.sign_up_pw_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -269,7 +275,12 @@ fun PasswordInputView(
         OutlinedTextField(
             value = text,
             onValueChange = onValueChange,
-            placeholder = { Text("비밀번호", color = Color.LightGray) },
+            placeholder = {
+                Text(
+                    text = stringResource(R.string.pw_text),
+                    color = Color.LightGray
+                )
+            },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -304,7 +315,7 @@ fun PasswordInputView(
             }
         )
         Text(
-            "영문, 숫자, 특수문자(~!@#$&^&*) 조합 8~15자리",
+            text = stringResource(R.string.pw_description),
             color = if (isError) {
                 Color.Red
             } else {

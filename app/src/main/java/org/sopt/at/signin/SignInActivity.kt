@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -72,6 +73,8 @@ class SignInActivity : ComponentActivity() {
             ATSOPTANDROIDTheme {
                 val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
+                val mismatchId= stringResource(R.string.sign_in_id_snackbar)
+                val mismatchPw= stringResource(R.string.sign_in_pw_snackbar)
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -86,11 +89,11 @@ class SignInActivity : ComponentActivity() {
                     val onClickSignIn: (String, String) -> Unit = { id, password ->
                         if (id != idState.value) {
                             scope.launch {
-                                snackbarHostState.showSnackbar("아이디가 일치하지 않습니다.")
+                                snackbarHostState.showSnackbar(mismatchId)
                             }
                         } else if (password != pwState.value) {
                             scope.launch {
-                                snackbarHostState.showSnackbar("비밀번호가 일치하지 않습니다.")
+                                snackbarHostState.showSnackbar(mismatchPw)
                             }
                         } else {
                             val intent = Intent(context, MyActivity::class.java).apply {
@@ -134,7 +137,7 @@ fun SignInView(
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                "TVING ID 로그인",
+                text = stringResource(R.string.sing_in_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 12.dp),
@@ -157,15 +160,17 @@ fun SignInView(
                     containerColor = Color.Red
                 )
             ) {
-                Text("로그인하기", color = Color.LightGray, fontSize = 16.sp)
+                Text(
+                    text = stringResource(R.string.sign_in_button),
+                    color = Color.LightGray, fontSize = 16.sp
+                )
             }
             Spacer(modifier = Modifier.height(12.dp))
             SignInBottom(onClickSignUp)
         }
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            "이 사이트는 Google reCAPTCHA로 보호되며,\n" +
-                    "Google 개인정보 처리방침과 서비스 약관이 적용됩니다.",
+            text = stringResource(R.string.term_description),
             fontSize = 12.sp,
             color = Color.DarkGray,
             textAlign = TextAlign.Center,
@@ -224,12 +229,18 @@ fun SignInBottom(onClickSignUp: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("아이디 찾기", color = Color.LightGray)
-        Text("|", color = Color.Gray)
-        Text("비밀번호 찾기", color = Color.LightGray)
+        Text(
+            text = stringResource(R.string.find_id_text),
+            color = Color.LightGray
+        )
         Text("|", color = Color.Gray)
         Text(
-            "회원가입",
+            text = stringResource(R.string.find_pw_text),
+            color = Color.LightGray
+        )
+        Text("|", color = Color.Gray)
+        Text(
+            text = stringResource(R.string.sign_up_text),
             Modifier.clickable(
                 onClick = onClickSignUp
             ),
