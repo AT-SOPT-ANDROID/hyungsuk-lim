@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -47,6 +47,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.sopt.at.R
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
 class SignUpActivity : ComponentActivity() {

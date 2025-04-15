@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.my
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

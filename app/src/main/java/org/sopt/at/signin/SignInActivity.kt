@@ -1,4 +1,4 @@
-package org.sopt.at
+package org.sopt.at.signin
 
 import android.content.Intent
 import android.os.Bundle
@@ -49,6 +49,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import org.sopt.at.my.MyActivity
+import org.sopt.at.R
+import org.sopt.at.signup.SignUpActivity
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 
 class SignInActivity : ComponentActivity() {
