@@ -159,7 +159,7 @@ fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, mo
 @Composable
 fun SignInBottom(onClickSignUp: () -> Unit) {
     Row(
-        modifier = Modifierq
+        modifier = Modifier
             .fillMaxWidth()
             .height(20.dp),
         horizontalArrangement = Arrangement.SpaceAround,
