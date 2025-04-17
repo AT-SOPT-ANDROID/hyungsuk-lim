@@ -21,22 +21,12 @@ class MyActivity : ComponentActivity() {
         setContent {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyView(
+                    MyScreen(
                         modifier = Modifier.padding(innerPadding),
                         userId = userId
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MyView(
-    modifier: Modifier = Modifier,
-    userId: String
-) {
-    Column(modifier = modifier) {
-        Text(userId)
     }
 }
