@@ -14,32 +14,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.at.R
+import org.sopt.at.component.TvingCustomTextField
 
 @Composable
 fun SignInScreen(
@@ -69,17 +58,23 @@ fun SignInScreen(
                 modifier = Modifier.padding(bottom = 12.dp),
                 color = Color.White
             )
-            SignInInput(
-                text = id,
+            TvingCustomTextField(
+                value = id,
                 label = "아이디",
                 onValueChange = { signInViewModel.updateId(it) },
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp),
+                focusedBorderColor = Color.White,
+                cursorColor = Color.White,
+                roundedCornerShape = RoundedCornerShape(4.dp)
             )
-            SignInInput(
-                text = password,
+            TvingCustomTextField(
+                value = password,
                 label = "비밀번호",
                 onValueChange = { signInViewModel.updatePw(it) },
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp),
+                focusedBorderColor = Color.White,
+                cursorColor = Color.White,
+                roundedCornerShape = RoundedCornerShape(4.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Button(
@@ -114,47 +109,6 @@ fun SignInScreen(
     }
 }
 
-@Composable
-fun SignInInput(text: String, label: String, onValueChange: (String) -> Unit, modifier: Modifier) {
-    var isVisible by remember { mutableStateOf(false) }
-    OutlinedTextField(
-        value = text,
-        onValueChange = onValueChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = Color.DarkGray)
-            .height(52.dp),
-        placeholder = { Text(label, color = Color.LightGray) },
-        textStyle = TextStyle(color = Color.White),
-        trailingIcon = if (label == "비밀번호") {
-            {
-                IconButton(onClick = { isVisible = !isVisible }) {
-                    Icon(
-                        painter = painterResource(
-                            if (isVisible) R.drawable.baseline_remove_red_eye_24
-                            else R.drawable.baseline_visibility_off_24
-                        ),
-                        contentDescription = "",
-                        tint = Color.LightGray
-                    )
-                }
-            }
-        } else null,
-        visualTransformation = if (label == "비밀번호" && !isVisible) {
-            PasswordVisualTransformation()
-        } else {
-            VisualTransformation.None
-        },
-        singleLine = true,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.White,
-            unfocusedBorderColor = Color.Transparent,
-            cursorColor = Color.White,
-        ),
-        shape = RoundedCornerShape(4.dp),
-    )
-}
 
 @Composable
 fun SignInBottom(onClickSignUp: () -> Unit) {
@@ -169,13 +123,11 @@ fun SignInBottom(onClickSignUp: () -> Unit) {
             text = stringResource(R.string.find_id_text),
             color = Color.LightGray
         )
-//        Text("|", color = Color.Gray)
         VerticalDivider(thickness = 1.dp)
         Text(
             text = stringResource(R.string.find_pw_text),
             color = Color.LightGray
         )
-//        Text("|", color = Color.Gray)
         VerticalDivider(thickness = 1.dp)
         Text(
             text = stringResource(R.string.sign_up_text),

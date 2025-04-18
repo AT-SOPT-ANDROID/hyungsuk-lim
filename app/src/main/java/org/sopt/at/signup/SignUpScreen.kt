@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,15 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.R
+import org.sopt.at.component.TvingCustomTextField
 
 @Composable
 fun SignUpScreen(
@@ -94,28 +87,13 @@ fun IdInputScreen(
                 .padding(bottom = 36.dp),
             color = Color.White
         )
-        OutlinedTextField(
+        TvingCustomTextField(
             value = text,
+            label = stringResource(R.string.id_text),
             onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = stringResource(R.string.id_text),
-                    color = Color.LightGray
-                )
-            },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(2.dp))
-                .background(color = Color.DarkGray)
-                .height(52.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.LightGray,
-                unfocusedBorderColor = Color.Transparent,
-                cursorColor = Color.White,
-            ),
-            shape = RoundedCornerShape(2.dp),
-            textStyle = TextStyle(color = Color.White)
+            focusedBorderColor = Color.LightGray,
+            cursorColor = Color.White,
+            roundedCornerShape = RoundedCornerShape(2.dp)
         )
         Text(
             text = stringResource(R.string.id_description),
@@ -170,47 +148,13 @@ fun PasswordInputScreen(
                 .padding(bottom = 36.dp),
             color = Color.White
         )
-        OutlinedTextField(
+        TvingCustomTextField(
             value = text,
             onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = stringResource(R.string.pw_text),
-                    color = Color.LightGray
-                )
-            },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(2.dp))
-                .background(color = Color.DarkGray)
-                .height(52.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.LightGray,
-                unfocusedBorderColor = Color.Transparent,
-                cursorColor = Color.White,
-            ),
-            shape = RoundedCornerShape(2.dp),
-            textStyle = TextStyle(color = Color.White),
-            trailingIcon =
-                {
-                    IconButton(onClick = { isVisible = !isVisible }) {
-                        Icon(
-                            painter = painterResource(
-                                if (isVisible) R.drawable.baseline_remove_red_eye_24
-                                else R.drawable.baseline_visibility_off_24
-                            ),
-                            contentDescription = "",
-                            tint = Color.LightGray
-                        )
-                    }
-
-                },
-            visualTransformation = if (!isVisible) {
-                PasswordVisualTransformation()
-            } else {
-                VisualTransformation.None
-            }
+            label = stringResource(R.string.pw_text),
+            focusedBorderColor = Color.LightGray,
+            cursorColor = Color.White,
+            roundedCornerShape = RoundedCornerShape(2.dp)
         )
         Text(
             text = stringResource(R.string.pw_description),

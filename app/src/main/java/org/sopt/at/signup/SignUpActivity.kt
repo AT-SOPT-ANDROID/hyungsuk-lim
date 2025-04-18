@@ -54,16 +54,13 @@ class SignUpActivity : ComponentActivity() {
                     val id = signUpViewModel.id.value
                     val pw = signUpViewModel.pw.value
                     val step = signUpViewModel.step.value
-                    val isError = signUpViewModel.isError.value
                     val idErrorMessage = stringResource(R.string.sign_up_id_error_msg)
                     val pwErrorMessage = stringResource(R.string.sign_up_pw_error_msg)
                     val onNext: () -> Unit = {
                         if (signUpViewModel.isValidId(id)) {
-//                            isError = false
                             signUpViewModel.setIsError(isError = false)
                             signUpViewModel.onNext()
                         } else {
-//                            isError = true
                             signUpViewModel.setIsError(isError = true)
                             scope.launch {
                                 snackbarHostState.showSnackbar(idErrorMessage)
@@ -79,7 +76,6 @@ class SignUpActivity : ComponentActivity() {
                             setResult(RESULT_OK, intent)
                             finish()
                         } else {
-//                            isError = true
                             signUpViewModel.setIsError(isError = true)
                             scope.launch {
                                 snackbarHostState.showSnackbar(pwErrorMessage)
@@ -94,7 +90,6 @@ class SignUpActivity : ComponentActivity() {
                         IconButton(
                             onClick = {
                                 if (step == 2) {
-//                                    isError = false
                                     signUpViewModel.setIsError(isError = false)
                                     signUpViewModel.onPrevious()
                                 } else {
