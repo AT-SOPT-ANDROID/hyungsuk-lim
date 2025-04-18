@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -33,7 +34,6 @@ fun TvingCustomTextField(
     isVisible: Boolean,
     switchVisibility: () -> Unit = {}
 ) {
-//    var isVisible by remember { mutableStateOf(false) }
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -56,7 +56,7 @@ fun TvingCustomTextField(
             cursorColor = cursorColor,
         ),
         shape = roundedCornerShape,
-        trailingIcon = if (label == "비밀번호") {
+        trailingIcon = if (label == stringResource(R.string.pw_text)) {
             {
                 IconButton(onClick = { switchVisibility() }) {
                     Icon(
@@ -70,7 +70,7 @@ fun TvingCustomTextField(
                 }
             }
         } else null,
-        visualTransformation = if (label == "비밀번호" && !isVisible) {
+        visualTransformation = if (label == stringResource(R.string.pw_text) && !isVisible) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None

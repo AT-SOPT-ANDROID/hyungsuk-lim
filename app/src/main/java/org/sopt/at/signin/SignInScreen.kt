@@ -60,7 +60,7 @@ fun SignInScreen(
             )
             TvingCustomTextField(
                 value = id,
-                label = "아이디",
+                label = stringResource(R.string.id_text),
                 onValueChange = { signInViewModel.updateId(it) },
                 modifier = Modifier.padding(bottom = 12.dp),
                 focusedBorderColor = Color.White,
@@ -70,7 +70,7 @@ fun SignInScreen(
             )
             TvingCustomTextField(
                 value = password,
-                label = "비밀번호",
+                label = stringResource(R.string.pw_text),
                 onValueChange = { signInViewModel.updatePw(it) },
                 modifier = Modifier.padding(bottom = 12.dp),
                 focusedBorderColor = Color.White,

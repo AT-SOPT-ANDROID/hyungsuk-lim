@@ -51,7 +51,6 @@ fun SignUpScreen(
                 onValueChange = { signUpViewModel.updateId(it) },
                 onNext = { onNext() },
                 isError = isError,
-                signUpViewModel = signUpViewModel
             )
         } else if (step == 2) {
             PasswordInputScreen(
@@ -71,7 +70,6 @@ fun IdInputScreen(
     onValueChange: (String) -> Unit,
     onNext: () -> Unit,
     isError: Boolean,
-    signUpViewModel: SignUpViewModel
 ) {
     Column(
         modifier = Modifier
