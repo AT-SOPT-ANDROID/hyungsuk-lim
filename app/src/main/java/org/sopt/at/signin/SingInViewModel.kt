@@ -11,6 +11,9 @@ class SingInViewModel : ViewModel() {
     private val _pw = mutableStateOf("")
     val pw: MutableState<String> get() = _pw
 
+    private val _visibility = mutableStateOf(false)
+    val visibility: MutableState<Boolean> get() = _visibility
+
     fun updateId(id: String) {
         _id.value = id
     }
@@ -19,4 +22,7 @@ class SingInViewModel : ViewModel() {
         _pw.value = pw
     }
 
+    fun switchVisibility() {
+        _visibility.value = !_visibility.value
+    }
 }

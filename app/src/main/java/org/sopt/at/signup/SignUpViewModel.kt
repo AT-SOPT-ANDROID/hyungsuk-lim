@@ -17,6 +17,9 @@ class SignUpViewModel : ViewModel() {
     private val _isError = mutableStateOf(false)
     val isError: MutableState<Boolean> get() = _isError
 
+    private val _visibility = mutableStateOf(false)
+    val visibility: MutableState<Boolean> get() = _visibility
+
     val isValidId = { id: String ->
         id.matches(Regex("^[a-z0-9]{6,12}$")) &&
                 id.contains(Regex("[a-z]"))
@@ -47,5 +50,9 @@ class SignUpViewModel : ViewModel() {
 
     fun setIsError(isError: Boolean) {
         _isError.value = isError
+    }
+
+    fun switchVisibility() {
+        _visibility.value = !_visibility.value
     }
 }

@@ -65,7 +65,8 @@ fun SignInScreen(
                 modifier = Modifier.padding(bottom = 12.dp),
                 focusedBorderColor = Color.White,
                 cursorColor = Color.White,
-                roundedCornerShape = RoundedCornerShape(4.dp)
+                roundedCornerShape = RoundedCornerShape(4.dp),
+                isVisible = true,
             )
             TvingCustomTextField(
                 value = password,
@@ -74,7 +75,9 @@ fun SignInScreen(
                 modifier = Modifier.padding(bottom = 12.dp),
                 focusedBorderColor = Color.White,
                 cursorColor = Color.White,
-                roundedCornerShape = RoundedCornerShape(4.dp)
+                roundedCornerShape = RoundedCornerShape(4.dp),
+                isVisible = signInViewModel.visibility.value,
+                switchVisibility = { signInViewModel.switchVisibility() }
             )
             Spacer(modifier = Modifier.height(4.dp))
             Button(

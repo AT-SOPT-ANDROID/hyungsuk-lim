@@ -10,10 +10,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -33,9 +29,11 @@ fun TvingCustomTextField(
     modifier: Modifier = Modifier,
     focusedBorderColor: Color,
     cursorColor: Color,
-    roundedCornerShape: RoundedCornerShape
+    roundedCornerShape: RoundedCornerShape,
+    isVisible: Boolean,
+    switchVisibility: () -> Unit = {}
 ) {
-    var isVisible by remember { mutableStateOf(false) }
+//    var isVisible by remember { mutableStateOf(false) }
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -60,7 +58,7 @@ fun TvingCustomTextField(
         shape = roundedCornerShape,
         trailingIcon = if (label == "비밀번호") {
             {
-                IconButton(onClick = { isVisible = !isVisible }) {
+                IconButton(onClick = { switchVisibility() }) {
                     Icon(
                         painter = painterResource(
                             if (isVisible) R.drawable.baseline_remove_red_eye_24

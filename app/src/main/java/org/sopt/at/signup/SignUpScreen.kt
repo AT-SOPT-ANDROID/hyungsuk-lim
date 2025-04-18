@@ -15,10 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,14 +50,16 @@ fun SignUpScreen(
                 text = id,
                 onValueChange = { signUpViewModel.updateId(it) },
                 onNext = { onNext() },
-                isError = isError
+                isError = isError,
+                signUpViewModel = signUpViewModel
             )
         } else if (step == 2) {
             PasswordInputScreen(
                 text = password,
                 onValueChange = { signUpViewModel.updatePw(it) },
                 onSignUp = { signUp() },
-                isError = isError
+                isError = isError,
+                signUpViewModel = signUpViewModel
             )
         }
     }
@@ -72,7 +70,8 @@ fun IdInputScreen(
     text: String,
     onValueChange: (String) -> Unit,
     onNext: () -> Unit,
-    isError: Boolean
+    isError: Boolean,
+    signUpViewModel: SignUpViewModel
 ) {
     Column(
         modifier = Modifier
@@ -93,7 +92,9 @@ fun IdInputScreen(
             onValueChange = onValueChange,
             focusedBorderColor = Color.LightGray,
             cursorColor = Color.White,
-            roundedCornerShape = RoundedCornerShape(2.dp)
+            roundedCornerShape = RoundedCornerShape(2.dp),
+            isVisible = true,
+            switchVisibility = { }
         )
         Text(
             text = stringResource(R.string.id_description),
@@ -121,7 +122,7 @@ fun IdInputScreen(
             ),
             border = BorderStroke(0.5.dp, Color.Gray)
         ) {
-            Text(text = "다음", fontSize = 14.sp)
+            Text(text = stringResource(R.string.next_button), fontSize = 14.sp)
         }
         Spacer(modifier = Modifier.weight(1f))
     }
@@ -132,9 +133,9 @@ fun PasswordInputScreen(
     text: String,
     onValueChange: (String) -> Unit,
     onSignUp: () -> Unit,
-    isError: Boolean
+    isError: Boolean,
+    signUpViewModel: SignUpViewModel
 ) {
-    var isVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .width(440.dp)
@@ -154,7 +155,9 @@ fun PasswordInputScreen(
             label = stringResource(R.string.pw_text),
             focusedBorderColor = Color.LightGray,
             cursorColor = Color.White,
-            roundedCornerShape = RoundedCornerShape(2.dp)
+            roundedCornerShape = RoundedCornerShape(2.dp),
+            isVisible = signUpViewModel.visibility.value,
+            switchVisibility = { signUpViewModel.switchVisibility() }
         )
         Text(
             text = stringResource(R.string.pw_description),
@@ -181,7 +184,7 @@ fun PasswordInputScreen(
             ),
             border = BorderStroke(0.5.dp, Color.Gray)
         ) {
-            Text("다음", fontSize = 14.sp)
+            Text(text = stringResource(R.string.next_button), fontSize = 14.sp)
         }
         Spacer(modifier = Modifier.weight(1f))
     }
