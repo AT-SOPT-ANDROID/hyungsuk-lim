@@ -3,6 +3,7 @@
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_my">MyActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
 
     <string name="sing_in_title">TVING ID 로그인</string>
     <string name="sign_in_button">로그인하기</string>

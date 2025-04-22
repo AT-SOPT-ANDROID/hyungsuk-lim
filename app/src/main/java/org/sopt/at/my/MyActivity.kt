@@ -19,7 +19,7 @@ class MyActivity : ComponentActivity() {
             ATSOPTANDROIDTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MyScreen(
-                        modifier = Modifier.padding(innerPadding),
+                        paddingValues = innerPadding,
                         userId = userId
                     )
                 }
