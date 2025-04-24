@@ -1,4 +1,4 @@
-package org.sopt.at.home
+package org.sopt.at.home.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import org.sopt.at.R
-import org.sopt.at.home.Home
+import org.sopt.at.home.screen.Home
 import org.sopt.at.my.My
 
 @Composable

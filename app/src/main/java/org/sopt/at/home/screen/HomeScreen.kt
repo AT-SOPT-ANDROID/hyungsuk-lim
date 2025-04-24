@@ -1,4 +1,4 @@
-package org.sopt.at.home
+package org.sopt.at.home.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,7 +17,7 @@ fun HomeScreen(
     paddingValues: PaddingValues
 ) {
     Column(
-        modifier = Modifier.padding(paddingValues)
+        modifier = Modifier.padding(paddingValues),
     ) {
         Text(text = "Home", fontSize = 24.sp)
     }

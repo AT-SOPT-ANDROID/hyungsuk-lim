@@ -16,6 +16,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.sopt.at.component.BottomNavBar
 import org.sopt.at.component.TopBar
+import org.sopt.at.home.screen.History
+import org.sopt.at.home.screen.HistoryScreen
+import org.sopt.at.home.screen.Home
+import org.sopt.at.home.screen.HomeScreen
+import org.sopt.at.home.screen.Live
+import org.sopt.at.home.screen.LiveScreen
+import org.sopt.at.home.screen.Search
+import org.sopt.at.home.screen.SearchScreen
+import org.sopt.at.home.screen.Shorts
+import org.sopt.at.home.screen.ShortsScreen
 import org.sopt.at.my.My
 import org.sopt.at.my.MyScreen
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
