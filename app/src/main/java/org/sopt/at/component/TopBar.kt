@@ -1,15 +1,15 @@
 package org.sopt.at.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,23 +33,25 @@ fun TopBar(navController: NavController) {
             .background(
                 color = Color.Black
             ),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxSize(),
+                .fillMaxWidth()
+                .height(24.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .height(24.dp)
+                    .fillMaxHeight()
                     .clickable { navController.navigate(Home) }
             ) {
                 Icon(
                     modifier = Modifier
-                        .height(24.dp),
+                        .fillMaxHeight(),
                     painter = painterResource(R.drawable.tving_bi_logotype),
                     contentDescription = "TVING LOGO",
                     tint = Color.Unspecified
@@ -57,15 +59,17 @@ fun TopBar(navController: NavController) {
             }
             Box(
                 modifier = Modifier
-                    .size(24.dp)
+                    .fillMaxHeight()
                     .background(Color.LightGray)
                     .clickable { navController.navigate(My) }
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.user_person_profile_avatar_icon_190943),
+                Image(
+                    painter = painterResource(R.drawable.tving_profile),
                     contentDescription = "MY Profile",
-                    tint = Color.Blue,
-                    modifier = Modifier.align(Alignment.Center)
+//                    tint = Color.Blue,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxHeight()
                 )
 
             }
