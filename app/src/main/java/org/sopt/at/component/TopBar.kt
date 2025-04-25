@@ -66,7 +66,6 @@ fun TopBar(navController: NavController) {
                 Image(
                     painter = painterResource(R.drawable.tving_profile),
                     contentDescription = "MY Profile",
-//                    tint = Color.Blue,
                     modifier = Modifier
                         .align(Alignment.Center)
                         .fillMaxHeight()

@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.at.home.contents.BannerContents
-import org.sopt.at.home.contents.Content
+import org.sopt.at.home.model.BannerContents
+import org.sopt.at.home.model.Content
 
 @Composable
 fun HomeTopBannerLazyRow(

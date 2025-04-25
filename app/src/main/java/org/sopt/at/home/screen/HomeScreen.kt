@@ -18,10 +18,10 @@ import kotlinx.serialization.Serializable
 import org.sopt.at.home.component.CategoryButtonLazyRow
 import org.sopt.at.home.component.HomeLazyRow
 import org.sopt.at.home.component.HomeTopBannerLazyRow
-import org.sopt.at.home.contents.BannerContents
-import org.sopt.at.home.contents.CategoryList
-import org.sopt.at.home.contents.LiveNowContentsList
-import org.sopt.at.home.contents.Top20Contents
+import org.sopt.at.home.model.bannerContents
+import org.sopt.at.home.model.categoryList
+import org.sopt.at.home.model.liveNowContentsList
+import org.sopt.at.home.model.top20Contents
 
 @Serializable
 data object Home
@@ -39,13 +39,13 @@ fun HomeScreen(
             .verticalScroll(state = scrollState),
     ) {
         HomeTopBannerLazyRow(
-            topBannerList = BannerContents
+            topBannerList = bannerContents
         )
         Spacer(
             modifier = Modifier.weight(1f)
         )
         CategoryButtonLazyRow(
-            categoryList = CategoryList
+            categoryList = categoryList
         )
         Spacer(
             modifier = Modifier
@@ -53,7 +53,7 @@ fun HomeScreen(
         )
         HomeLazyRow(
             title = "오늘의 티빙 TOP 20",
-            contentsList = Top20Contents,
+            contentsList = top20Contents,
             withRank = true
         )
         Spacer(
@@ -63,7 +63,7 @@ fun HomeScreen(
         )
         HomeLazyRow(
             title = "지금 방영 중인 콘텐츠",
-            contentsList = LiveNowContentsList,
+            contentsList = liveNowContentsList,
             withRank = false
         )
         Spacer(

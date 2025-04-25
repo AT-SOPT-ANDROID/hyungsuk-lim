@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.at.home.contents.Category
-import org.sopt.at.home.contents.CategoryList
+import org.sopt.at.home.model.Category
+import org.sopt.at.home.model.CategoryList
 
 @Composable
 fun CategoryButtonLazyRow(
