@@ -1,4 +1,4 @@
-package org.sopt.at.home.contents
+package org.sopt.at.home.model
 
 import org.sopt.at.R
 
@@ -7,7 +7,7 @@ data class Category(
     val imageId: Int
 )
 
-val CategoryList = listOf<Category>(
+val categoryList = listOf<Category>(
     Category(
         name = "KBO",
         imageId = R.drawable.kbo_button

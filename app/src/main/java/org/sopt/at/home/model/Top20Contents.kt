@@ -1,8 +1,8 @@
-package org.sopt.at.home.contents
+package org.sopt.at.home.model
 
 import org.sopt.at.R
 
-val Top20Contents = listOf<Content>(
+val top20Contents = listOf<Content>(
     Content(
         title = "신병3",
         imageId = R.drawable.sinbyung,
@@ -121,6 +121,6 @@ val Top20Contents = listOf<Content>(
         title = "길바닥 밥장사",
         imageId = R.drawable.roadrice,
         genre = "",
-        rank = 20
+        rank = 2
     ),
 )

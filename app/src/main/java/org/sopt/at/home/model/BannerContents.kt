@@ -1,8 +1,8 @@
-package org.sopt.at.home.contents
+package org.sopt.at.home.model
 
 import org.sopt.at.R
 
-val BannerContents = listOf<Content>(
+val bannerContents = listOf<Content>(
     Content(
         title = "신병 3",
         imageId = R.drawable.sinbyung3_banner,

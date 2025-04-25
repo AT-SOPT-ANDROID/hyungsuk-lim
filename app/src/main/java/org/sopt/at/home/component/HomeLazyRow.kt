@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.home.model.Content
-import org.sopt.at.home.model.Top20Contents
+import org.sopt.at.home.model.top20Contents
 
 @Composable
 fun HomeLazyRow(
@@ -93,5 +93,5 @@ fun HomeLazyRow(
 @Preview(showBackground = true)
 @Composable
 fun HomeLazyRowPreview() {
-    HomeLazyRow("preview", Top20Contents, true)
+    HomeLazyRow("preview", top20Contents, true)
 }

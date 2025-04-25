@@ -1,8 +1,8 @@
-package org.sopt.at.home.contents
+package org.sopt.at.home.model
 
 import org.sopt.at.R
 
-val LiveNowContentsList = listOf<Content>(
+val liveNowContentsList = listOf<Content>(
     Content(
         title = "바니와 오빠들",
         imageId = R.drawable.banny_banner,
@@ -103,6 +103,6 @@ val LiveNowContentsList = listOf<Content>(
         title = "길바닥 밥장사",
         imageId = R.drawable.fryingtravel_thumbnail,
         genre = "",
-        rank = 17,
+        rank = 1,
     ),
 )
