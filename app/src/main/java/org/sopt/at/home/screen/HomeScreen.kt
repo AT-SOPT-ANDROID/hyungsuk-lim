@@ -6,13 +6,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
-import org.sopt.at.component.HomeLazyRow
+import org.sopt.at.home.component.CategoryButtonLazyRow
+import org.sopt.at.home.component.HomeLazyRow
+import org.sopt.at.home.component.HomeTopBannerLazyRow
+import org.sopt.at.home.contents.BannerContents
+import org.sopt.at.home.contents.CategoryList
 import org.sopt.at.home.contents.Top20Contents
 
 @Serializable
@@ -22,13 +26,28 @@ data object Home
 fun HomeScreen(
     paddingValues: PaddingValues
 ) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .padding(paddingValues)
             .fillMaxSize()
-            .background(Color.Black),
+            .background(Color.Black)
+            .verticalScroll(state = scrollState),
     ) {
-        Text(text = "Home", fontSize = 24.sp, color = Color.White)
+//        Text(text = "Home", fontSize = 24.sp, color = Color.White)
+        HomeTopBannerLazyRow(
+            topBannerList = BannerContents
+        )
+        Spacer(
+            modifier = Modifier.weight(1f)
+        )
+        CategoryButtonLazyRow(
+            categoryList = CategoryList
+        )
+        Spacer(
+            modifier = Modifier
+                .weight(1f)
+        )
         HomeLazyRow(
             title = "오늘의 티빙 TOP 20",
             contentsList = Top20Contents,
@@ -36,7 +55,16 @@ fun HomeScreen(
         )
         Spacer(
             modifier = Modifier
-                .weight(3f)
+                .weight(1f)
+        )
+        HomeLazyRow(
+            title = "지금 방영 중인 콘텐츠",
+            contentsList = Top20Contents,
+            withRank = true
+        )
+        Spacer(
+            modifier = Modifier
+                .weight(1f)
         )
     }
 }

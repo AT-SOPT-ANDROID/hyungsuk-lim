@@ -1,4 +1,4 @@
-package org.sopt.at.component
+package org.sopt.at.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.home.contents.Content
 import org.sopt.at.home.contents.Top20Contents
-import org.sopt.at.home.screen.Home
 
 @Composable
 fun HomeLazyRow(
@@ -34,7 +33,7 @@ fun HomeLazyRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp)
-            .padding(start = 12.dp)
+            .padding(start = 16.dp)
             .background(color = Color.Black),
         verticalArrangement = Arrangement.Top
     ) {
@@ -50,7 +49,6 @@ fun HomeLazyRow(
         )
         LazyRow(
             modifier = Modifier,
-//            contentPadding = PaddingValues(horizontal = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(contentsList) { content ->
@@ -79,7 +77,7 @@ fun HomeLazyRow(
         }
         Spacer(
             modifier = Modifier
-                .weight(3f)
+                .weight(2f)
         )
     }
 }
