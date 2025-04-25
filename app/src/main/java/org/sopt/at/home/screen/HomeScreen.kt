@@ -31,7 +31,8 @@ fun HomeScreen(
         Text(text = "Home", fontSize = 24.sp, color = Color.White)
         HomeLazyRow(
             title = "오늘의 티빙 TOP 20",
-            contentsList = Top20Contents
+            contentsList = Top20Contents,
+            withRank = true
         )
         Spacer(
             modifier = Modifier
