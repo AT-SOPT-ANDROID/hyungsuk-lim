@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,15 +49,18 @@ fun HomeLazyRow(
         )
         Spacer(
             modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
+                .height(12.dp)
         )
         LazyRow(
-            modifier = Modifier,
+            modifier = Modifier
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(contentsList) { content ->
                 Row(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .fillMaxSize(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Bottom
                 ) {
@@ -62,7 +69,9 @@ fun HomeLazyRow(
                             text = content.rank.toString(),
                             fontSize = 64.sp,
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .align(Alignment.Bottom)
                         )
                         Spacer(
                             modifier = Modifier
@@ -70,15 +79,15 @@ fun HomeLazyRow(
                         )
                     }
                     ThumbnailContainer(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(25f / 36f),
+                        title = content.title,
                         imageId = content.imageId
                     )
                 }
             }
         }
-        Spacer(
-            modifier = Modifier
-                .weight(2f)
-        )
     }
 }
 
