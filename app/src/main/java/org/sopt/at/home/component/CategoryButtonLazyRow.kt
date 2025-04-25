@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.at.home.model.Category
-import org.sopt.at.home.model.CategoryList
+import org.sopt.at.home.model.categoryList
 
 @Composable
 fun CategoryButtonLazyRow(
@@ -35,5 +35,5 @@ fun CategoryButtonLazyRow(
 @Preview(showBackground = true)
 @Composable
 fun ButtonLazyRowPreview() {
-    CategoryButtonLazyRow(categoryList = CategoryList)
+    CategoryButtonLazyRow(categoryList = categoryList)
 }
