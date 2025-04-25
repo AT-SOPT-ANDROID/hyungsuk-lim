@@ -29,7 +29,7 @@ fun TopBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(48.dp)
             .background(
                 color = Color.Black
             ),

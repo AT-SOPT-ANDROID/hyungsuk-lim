@@ -1,5 +1,6 @@
 package org.sopt.at.home.screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import org.sopt.at.home.component.CategoryButtonLazyRow
+import org.sopt.at.home.component.GenreTabHeader
 import org.sopt.at.home.component.HomeLazyRow
 import org.sopt.at.home.component.HomeTopBannerLazyRow
 import org.sopt.at.home.model.bannerContents
@@ -24,6 +26,7 @@ import org.sopt.at.home.model.top20Contents
 @Serializable
 data object Home
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     paddingValues: PaddingValues
@@ -34,6 +37,12 @@ fun HomeScreen(
             .fillMaxSize()
             .background(Color.Black)
     ) {
+        stickyHeader {
+            GenreTabHeader(
+                modifier = Modifier
+
+            )
+        }
         item {
             HomeTopBannerLazyRow(
                 topBannerList = bannerContents
