@@ -41,7 +41,6 @@ fun HomeScreen(
         stickyHeader {
             GenreTabHeader(
                 modifier = Modifier
-
             )
         }
         item {
@@ -78,7 +77,6 @@ fun HomeScreen(
                 modifier = Modifier
                     .height(12.dp)
             )
-
         }
         item {
             HomeContentSection(
