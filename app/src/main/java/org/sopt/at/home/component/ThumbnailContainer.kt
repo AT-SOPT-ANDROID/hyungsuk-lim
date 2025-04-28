@@ -1,7 +1,6 @@
 package org.sopt.at.home.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -13,19 +12,16 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ThumbnailContainer(
-    modifier: Modifier = Modifier,
     title: String,
-    imageId: Int
+    imageId: Int,
+    modifier: Modifier = Modifier,
 ) {
-    Box(
+    Image(
         modifier = modifier
+            .fillMaxSize()
             .clip(RoundedCornerShape(8.dp)),
-    ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = imageId),
-            contentDescription = title,
-            contentScale = ContentScale.Fit
-        )
-    }
+        painter = painterResource(id = imageId),
+        contentDescription = title,
+        contentScale = ContentScale.Fit
+    )
 }

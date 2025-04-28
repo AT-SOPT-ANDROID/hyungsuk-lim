@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,47 +30,26 @@ fun TopBar(navController: NavController) {
             .height(48.dp)
             .background(
                 color = Color.Black
-            ),
-        horizontalArrangement = Arrangement.Center,
+            )
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+        Icon(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth()
-                .height(24.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .clickable { navController.navigate(Home) }
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .fillMaxHeight(),
-                    painter = painterResource(R.drawable.tving_bi_logotype),
-                    contentDescription = "TVING LOGO",
-                    tint = Color.Unspecified
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .background(Color.LightGray)
-                    .clickable { navController.navigate(My) }
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.tving_profile),
-                    contentDescription = "MY Profile",
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .fillMaxHeight()
-                )
-
-            }
-        }
+                .height(24.dp)
+                .clickable { navController.navigate(Home) },
+            painter = painterResource(R.drawable.tving_bi_logotype),
+            contentDescription = "TVING LOGO",
+            tint = Color.Unspecified
+        )
+        Image(
+            painter = painterResource(R.drawable.tving_profile),
+            contentDescription = "MY Profile",
+            modifier = Modifier
+                .height(24.dp)
+                .clickable { navController.navigate(My) }
+        )
     }
 }
 

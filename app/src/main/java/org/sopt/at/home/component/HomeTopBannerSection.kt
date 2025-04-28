@@ -16,7 +16,7 @@ import org.sopt.at.home.model.Content
 import org.sopt.at.home.model.bannerContents
 
 @Composable
-fun HomeTopBannerLazyRow(
+fun HomeTopBannerSection(
     topBannerList: List<Content>
 ) {
     LazyRow(
@@ -38,8 +38,8 @@ fun HomeTopBannerLazyRow(
 
 @Preview(showBackground = true)
 @Composable
-fun TopBannerLazyRowPreview() {
-    HomeTopBannerLazyRow(
+fun TopBannerSectionPreview() {
+    HomeTopBannerSection(
         topBannerList = bannerContents
     )
 }

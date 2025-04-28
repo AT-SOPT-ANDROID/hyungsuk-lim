@@ -27,7 +27,7 @@ import org.sopt.at.home.model.Content
 import org.sopt.at.home.model.top20Contents
 
 @Composable
-fun HomeLazyRow(
+fun HomeContentSection(
     title: String,
     contentsList: List<Content>,
     withRank: Boolean
@@ -92,6 +92,6 @@ fun HomeLazyRow(
 
 @Preview(showBackground = true)
 @Composable
-fun HomeLazyRowPreview() {
-    HomeLazyRow("preview", top20Contents, true)
+fun HomeContentSectionPreview() {
+    HomeContentSection("preview", top20Contents, true)
 }

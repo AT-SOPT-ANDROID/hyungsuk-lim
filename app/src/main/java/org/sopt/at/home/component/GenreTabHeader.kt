@@ -10,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.at.R
 
 @Composable
 fun GenreTabHeader(
@@ -27,33 +29,33 @@ fun GenreTabHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "드라마",
+            text = stringResource(R.string.genre_tab_drama),
             color = Color.White,
             fontSize = 16.sp
         )
         Text(
-            text = "예능",
+            text = stringResource(R.string.genre_tab_entertainment),
             color = Color.White,
             fontSize = 16.sp
         )
         Text(
-            text = "영화",
+            text = stringResource(R.string.genre_tab_movie),
             color = Color.White,
             fontSize = 16.sp
         )
         Text(
-            text = "스포츠",
+            text = stringResource(R.string.genre_tab_sports),
             color = Color.White,
             fontSize = 16.sp
         )
         Text(
-            text = "애니",
+            text = stringResource(R.string.genre_tab_animation),
             color = Color.White,
             fontSize = 16.sp
         )
 
         Text(
-            text = "뉴스",
+            text = stringResource(R.string.genre_tab_news),
             color = Color.White,
             fontSize = 16.sp
         )
