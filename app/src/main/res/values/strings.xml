@@ -3,6 +3,7 @@
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_my">MyActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
 
     <string name="sing_in_title">TVING ID 로그인</string>
     <string name="sign_in_button">로그인하기</string>
@@ -25,4 +26,20 @@
     <string name="sign_up_pw_error_msg">비밀번호는 영문, 숫자, 특수문자(~!@#$%^&amp;*) 조합 8~15자리입니다.</string>
 
     <string name="next_button">다음</string>
+
+    <string name="section_top20">오늘의 티빙 TOP 20</string>
+    <string name="section_nowlive">지금 방영 중인 콘텐츠</string>
+
+    <string name="bottom_nav_home">HOME</string>
+    <string name="bottom_nav_shorts">SHORTS</string>
+    <string name="bottom_nav_live">LIVE</string>
+    <string name="bottom_nav_search">SEARCH</string>
+    <string name="bottom_nav_history">HISTORY</string>
+
+    <string name="genre_tab_drama">드라마</string>
+    <string name="genre_tab_entertainment">예능</string>
+    <string name="genre_tab_movie">영화</string>
+    <string name="genre_tab_sports">스포츠</string>
+    <string name="genre_tab_animation">애니</string>
+    <string name="genre_tab_news">뉴스</string>
 </resources>

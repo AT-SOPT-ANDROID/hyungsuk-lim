@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.launch
 import org.sopt.at.R
+import org.sopt.at.home.HomeActivity
 import org.sopt.at.my.MyActivity
 import org.sopt.at.signup.SignUpActivity
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
@@ -53,7 +54,6 @@ class SignInActivity : ComponentActivity() {
                         SnackbarHost(hostState = snackbarHostState)
                     },
                 ) { innerPadding ->
-                    val signInViewModel = ViewModelProvider(this).get(SingInViewModel::class.java)
                     val context = LocalContext.current
                     val onClickSignUp = {
                         resultLauncher.launch(Intent(this, SignUpActivity::class.java))
@@ -68,7 +68,7 @@ class SignInActivity : ComponentActivity() {
                                 snackbarHostState.showSnackbar(mismatchPw)
                             }
                         } else {
-                            val intent = Intent(context, MyActivity::class.java).apply {
+                            val intent = Intent(context, HomeActivity::class.java).apply {
                                 flags =
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             }
@@ -78,9 +78,9 @@ class SignInActivity : ComponentActivity() {
                         }
                     }
                     SignInScreen(
-                        Modifier.padding(innerPadding),
-                        onClickSignUp,
-                        onClickSignIn,
+                        modifier = Modifier.padding(innerPadding),
+                        onClickSignUp = onClickSignUp,
+                        onClickSignIn = onClickSignIn,
                     )
                 }
             }
