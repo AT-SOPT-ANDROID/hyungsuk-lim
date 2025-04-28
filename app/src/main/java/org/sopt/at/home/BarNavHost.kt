@@ -19,10 +19,9 @@ import org.sopt.at.my.My
 import org.sopt.at.my.MyScreen
 
 @Composable
-fun HomeNavHost(
+fun BarNavHost(
     navController: NavHostController,
-    innerPadding: PaddingValues,
-    userId: String
+    innerPadding: PaddingValues
 ) {
     NavHost(
         navController = navController,
@@ -44,7 +43,7 @@ fun HomeNavHost(
             HistoryScreen(paddingValues = innerPadding)
         }
         composable<My> {
-            MyScreen(paddingValues = innerPadding, userId = userId)
+            MyScreen(paddingValues = innerPadding)
         }
     }
 

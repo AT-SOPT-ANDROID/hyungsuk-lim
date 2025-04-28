@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,17 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.serialization.Serializable
 import org.sopt.at.signin.SignInActivity
 
 @Serializable
-data object My
+data class My(
+    val userId: String
+)
 
 @Composable
 fun MyScreen(
     paddingValues: PaddingValues,
-    userId: String
 ) {
+    val myViewModel: MyViewModel = viewModel()
+    val userId = myViewModel.profile.userId
     val context = LocalContext.current
     Column(
         modifier = Modifier

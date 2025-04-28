@@ -23,6 +23,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             ATSOPTANDROIDTheme {
+                val userId = intent.getStringExtra("userId").orEmpty()
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
@@ -30,17 +31,18 @@ class HomeActivity : ComponentActivity() {
                             top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
                         ),
                     topBar = {
-                        TopBar(navController = navController)
+                        TopBar(
+                            navController = navController,
+                            userId = userId
+                        )
                     },
                     bottomBar = {
                         BottomNavBar(navController = navController)
                     }
                 ) { innerPadding ->
-                    val userId = intent.getStringExtra("userId").orEmpty()
-                    HomeNavHost(
+                    BarNavHost(
                         navController = navController,
                         innerPadding = innerPadding,
-                        userId = userId
                     )
                 }
             }
