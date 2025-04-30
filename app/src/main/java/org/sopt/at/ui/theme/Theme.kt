@@ -9,7 +9,59 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+object TvingTheme {
+    val colors: TvingColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTvingColorsProvider.current
+
+    val typography: TvingTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTvingTypographyProvider.current
+}
+
+@Composable
+fun ProvideTvingColorsAndTypography(
+    colors: TvingColors,
+    typography: TvingTypography,
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(
+        LocalTvingColorsProvider provides colors,
+        LocalTvingTypographyProvider provides typography,
+        content = content
+    )
+}
+
+@Composable
+fun TvingTheme(
+    content: @Composable () -> Unit
+) {
+    ProvideTvingColorsAndTypography(
+        colors = defaultTvingColors,
+        typography = defaultTvingTypography
+    ) {
+        val view = LocalView.current
+        if (!view.isInEditMode) {
+            SideEffect {
+                (view.context as Activity).window.run {
+                    WindowCompat.getInsetsController(this, view).isAppearanceLightStatusBars = false
+                }
+            }
+        }
+        MaterialTheme(
+            content = content
+        )
+    }
+}
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

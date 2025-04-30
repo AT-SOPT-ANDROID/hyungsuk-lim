@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
+import org.sopt.at.ui.theme.TvingTheme
 
 
 @Serializable
@@ -16,10 +17,10 @@ data object History
 @Composable
 fun HistoryScreen(
     paddingValues: PaddingValues
-){
+) {
     Column(
         modifier = Modifier.padding(paddingValues)
     ) {
-        Text(text = "History", fontSize = 24.sp)
+        Text(text = "History", style = TvingTheme.typography.title)
     }
 }

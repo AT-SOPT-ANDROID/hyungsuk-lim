@@ -25,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.at.home.model.Content
 import org.sopt.at.home.model.top20Contents
+import org.sopt.at.ui.theme.TvingTheme
 
 @Composable
 fun HomeContentSection(
-    title: String,
+    subTitle: String,
     contentsList: List<Content>,
     withRank: Boolean
 ) {
@@ -41,10 +42,9 @@ fun HomeContentSection(
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = title,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
+            text = subTitle,
+            style = TvingTheme.typography.subTitle,
+            color = TvingTheme.colors.BasicWhite
         )
         Spacer(
             modifier = Modifier

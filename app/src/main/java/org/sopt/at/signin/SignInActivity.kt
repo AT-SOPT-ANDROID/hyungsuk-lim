@@ -18,11 +18,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.launch
 import org.sopt.at.R
 import org.sopt.at.home.HomeActivity
-import org.sopt.at.my.MyActivity
 import org.sopt.at.signup.SignUpActivity
 import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
 

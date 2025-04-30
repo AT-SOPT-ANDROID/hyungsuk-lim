@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import org.sopt.at.component.BottomNavBar
 import org.sopt.at.component.TopBar
-import org.sopt.at.ui.theme.ATSOPTANDROIDTheme
+import org.sopt.at.ui.theme.TvingTheme
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class HomeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            ATSOPTANDROIDTheme {
+            TvingTheme {
                 val userId = intent.getStringExtra("userId").orEmpty()
                 Scaffold(
                     modifier = Modifier
