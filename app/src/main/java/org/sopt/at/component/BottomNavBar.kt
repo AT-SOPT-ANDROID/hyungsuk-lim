@@ -25,11 +25,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import org.sopt.at.R
-import org.sopt.at.home.screen.History
-import org.sopt.at.home.screen.Home
-import org.sopt.at.home.screen.Live
-import org.sopt.at.home.screen.Search
-import org.sopt.at.home.screen.Shorts
+import org.sopt.at.history.History
+import org.sopt.at.home.Home
+import org.sopt.at.live.Live
+import org.sopt.at.search.Search
+import org.sopt.at.shorts.Shorts
 
 @Composable
 fun BottomNavBar(navController: NavController) {

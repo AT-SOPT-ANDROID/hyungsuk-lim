@@ -1,4 +1,4 @@
-package org.sopt.at.home.screen
+package org.sopt.at.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,15 +11,15 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data object History
+data object Search
 
 @Composable
-fun HistoryScreen(
+fun SearchScreen(
     paddingValues: PaddingValues
 ){
     Column(
         modifier = Modifier.padding(paddingValues)
     ) {
-        Text(text = "History", fontSize = 24.sp)
+        Text(text = "Search", fontSize = 24.sp)
     }
 }

@@ -1,4 +1,4 @@
-package org.sopt.at.home.screen
+package org.sopt.at.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
