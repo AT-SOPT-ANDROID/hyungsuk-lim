@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +29,9 @@ data class My(
 fun MyScreen(
     paddingValues: PaddingValues,
 ) {
-    val myViewModel: MyViewModel = viewModel()
-    val userId = myViewModel.profile.userId
+    val viewModel: MyViewModel = viewModel()
     val context = LocalContext.current
+    val profile = remember { viewModel.profile }
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -38,7 +39,7 @@ fun MyScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(userId)
+        Text(profile.userId)
         Button(
             onClick = {
                 val intent = Intent(context, SignInActivity::class.java).apply {
