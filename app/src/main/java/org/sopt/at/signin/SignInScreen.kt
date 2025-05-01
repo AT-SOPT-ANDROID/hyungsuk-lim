@@ -34,9 +34,9 @@ import org.sopt.at.component.TvingCustomTextField
 fun SignInScreen(
     modifier: Modifier,
     onClickSignUp: () -> Unit,
-    onClickSignIn: (String, String) -> Unit,
+    onClickSignIn: () -> Unit,
 ) {
-    val signInViewModel: SingInViewModel = viewModel()
+    val signInViewModel: SignInViewModel = viewModel()
     val id = signInViewModel.id.value
     val password = signInViewModel.pw.value
     Column(
@@ -81,7 +81,7 @@ fun SignInScreen(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Button(
-                onClick = { onClickSignIn(id, password) },
+                onClick = { onClickSignIn() },
                 enabled = id.isNotBlank() && password.isNotBlank(),
                 modifier = Modifier
                     .fillMaxWidth()
