@@ -35,9 +35,7 @@ class SignUpActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ATSOPTANDROIDTheme {
-                val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
-                val signUpViewModel: SignUpViewModel = viewModel()
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -45,15 +43,17 @@ class SignUpActivity : ComponentActivity() {
                         SnackbarHost(hostState = snackbarHostState)
                     },
                 ) { innerPadding ->
+                    val scope = rememberCoroutineScope()
+                    val signUpViewModel: SignUpViewModel = viewModel()
                     val id = signUpViewModel.id.value
                     val pw = signUpViewModel.pw.value
-                    val step = signUpViewModel.step.value
+                    val step = signUpViewModel.step.intValue
                     val idErrorMessage = stringResource(R.string.sign_up_id_error_msg)
                     val pwErrorMessage = stringResource(R.string.sign_up_pw_error_msg)
                     val onNext: () -> Unit = {
                         if (signUpViewModel.isValidId(id)) {
                             signUpViewModel.setIsError(isError = false)
-                            signUpViewModel.onNext()
+                            signUpViewModel.nextStep()
                         } else {
                             signUpViewModel.setIsError(isError = true)
                             scope.launch {
