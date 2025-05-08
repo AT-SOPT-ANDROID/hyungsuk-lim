@@ -2,7 +2,6 @@ package org.sopt.at.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.sopt.at.ResponseCode
 
 @Serializable
 data class BaseResponseDto<T>(

@@ -1,5 +1,6 @@
 package org.sopt.at.signup
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,9 +19,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -50,78 +54,203 @@ fun SignUpScreen(
     val signUpViewModel: SignUpViewModel = viewModel()
     val id = signUpViewModel.id.value
     val password = signUpViewModel.pw.value
+    val nickname = signUpViewModel.nickname.value
     val isError = signUpViewModel.isError.value
-    val step = signUpViewModel.step.intValue
+    val signUpStep = signUpViewModel.signUpStep
     val idErrorMessage = stringResource(R.string.sign_up_id_error_msg)
     val pwErrorMessage = stringResource(R.string.sign_up_pw_error_msg)
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val signUpResult = signUpViewModel.signUpResult
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.Black),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-        ) {
-            IconButton(
-                onClick = {
-                    if (step == 2) {
-                        signUpViewModel.setIsError(isError = false)
-                        signUpViewModel.onPrevious()
-                    } else {
-                        navController.navigate(SignIn("", ""))
-                    }
-                },
-                modifier = Modifier.size(48.dp)
+    LaunchedEffect(signUpResult) {
+        when (signUpResult) {
+            is SignUpResult.Success -> navController.navigate(
+                SignIn(
+                    userId = id,
+                    userPw = password
+                )
+            )
+
+            is SignUpResult.Failure -> scope.launch {
+                Log.i("스낵바", signUpResult.message ?: "")
+                snackbarHostState.showSnackbar(signUpResult.message ?: "")
+            }
+
+            else -> {}
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        content = { innerPadding ->
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(color = Color.Black)
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "뒤로가기",
-                    tint = Color.White
+                InputScreen(
+                    value = when (signUpStep) {
+                        SignUpStep.Id -> id
+                        SignUpStep.Password -> password
+                        SignUpStep.Nickname -> nickname
+                    },
+                    signUpStep = signUpStep,
+                    onValueChange = {
+                        when (signUpStep) {
+                            SignUpStep.Id -> {
+                                signUpViewModel.updateId(it)
+                            }
+
+                            SignUpStep.Password -> {
+                                signUpViewModel.updatePw(it)
+                            }
+
+                            SignUpStep.Nickname -> {
+                                signUpViewModel.updateNickname(it)
+                            }
+                        }
+                    },
+                    onClickButton = {
+                        when (signUpStep) {
+                            SignUpStep.Nickname ->
+                                signUpViewModel.requestSignUp()
+
+                            else -> {
+                                signUpViewModel.setIsError(isError = false)
+                                signUpViewModel.nextStep()
+                            }
+                        }
+                    },
+                    onClickBack = {
+                        when (signUpStep) {
+                            SignUpStep.Id ->
+                                navController.navigate(SignIn("", ""))
+
+                            else -> {
+                                signUpViewModel.setIsError(isError = false)
+                                signUpViewModel.onPrevious()
+                            }
+                        }
+                    },
+                    isError = isError,
+                    signUpViewModel = signUpViewModel,
                 )
             }
         }
-        if (step == 1) {
-            IdInputScreen(
-                text = id,
-                onValueChange = { signUpViewModel.updateId(it) },
-                onNext = {
-                    if (signUpViewModel.isValidId(id)) {
-                        signUpViewModel.setIsError(isError = false)
-                        signUpViewModel.nextStep()
-                    } else {
-                        signUpViewModel.setIsError(isError = true)
-                        scope.launch {
-                            snackbarHostState.showSnackbar(idErrorMessage)
-                        }
-                    }
-                },
-                isError = isError,
-            )
-        } else if (step == 2) {
-            PasswordInputScreen(
-                text = password,
-                onValueChange = { signUpViewModel.updatePw(it) },
-                onSignUp = {
-                    if (signUpViewModel.isValidPw(password)) {
-                        navController.navigate(SignIn(userId = id, userPw = password))
-                    } else {
-                        signUpViewModel.setIsError(isError = true)
-                        scope.launch {
-                            snackbarHostState.showSnackbar(pwErrorMessage)
-                        }
-                    }
-                },
-                isError = isError,
-                signUpViewModel = signUpViewModel
+    )
+}
+
+@Composable
+fun InputScreen(
+    value: String,
+    signUpStep: SignUpStep,
+    onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit,
+    onClickBack: () -> Unit,
+    isError: Boolean,
+    signUpViewModel: SignUpViewModel,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+    ) {
+        IconButton(
+            onClick = onClickBack,
+            modifier = Modifier.size(48.dp)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                contentDescription = "뒤로가기",
+                tint = Color.White
             )
         }
+    }
+    Column(
+        modifier = Modifier
+            .width(440.dp)
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text =
+                when (signUpStep) {
+                    SignUpStep.Id -> {
+                        stringResource(R.string.sign_up_id_title)
+                    }
+
+                    SignUpStep.Password -> {
+                        stringResource(R.string.sign_up_pw_title)
+                    }
+
+                    SignUpStep.Nickname -> {
+                        stringResource(R.string.sign_up_nickname_title)
+                    }
+                },
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(bottom = 36.dp),
+            color = Color.White
+        )
+        TvingCustomTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = when (signUpStep) {
+                SignUpStep.Id -> stringResource(R.string.id_text)
+                SignUpStep.Password -> stringResource(R.string.pw_text)
+                SignUpStep.Nickname -> stringResource(R.string.nickname_text)
+            },
+            focusedBorderColor = Color.LightGray,
+            cursorColor = Color.White,
+            roundedCornerShape = RoundedCornerShape(2.dp),
+            isVisible = signUpViewModel.visibility.value,
+            switchVisibility = {
+                if (signUpStep == SignUpStep.Password) {
+                    signUpViewModel.switchVisibility()
+                }
+            }
+        )
+        Text(
+            text = when (signUpStep) {
+                SignUpStep.Id -> stringResource(R.string.id_description)
+                SignUpStep.Password -> stringResource(R.string.pw_description)
+                SignUpStep.Nickname -> stringResource(R.string.nickname_description)
+            },
+            color = if (isError) {
+                Color.Red
+            } else {
+                Color.Gray
+            },
+            fontSize = 12.sp
+        )
+        Spacer(modifier = Modifier.weight(5f))
+        Button(
+            onClick = onClickButton,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp),
+            shape = RoundedCornerShape(2.dp),
+            enabled = value != "",
+            colors = ButtonDefaults.buttonColors(
+                disabledContainerColor = Color.Black,
+                disabledContentColor = Color.White,
+                containerColor = Color.White,
+                contentColor = Color.Black,
+            ),
+            border = BorderStroke(0.5.dp, Color.Gray)
+        ) {
+            Text(
+                text = when (signUpStep) {
+                    SignUpStep.Id, SignUpStep.Password -> stringResource(R.string.next_button)
+                    SignUpStep.Nickname -> stringResource(R.string.sign_up_text)
+                }, fontSize = 14.sp
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
