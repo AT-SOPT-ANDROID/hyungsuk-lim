@@ -1,4 +1,4 @@
-package org.sopt.at.home.screen
+package org.sopt.at.history
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,18 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Serializable
+import org.sopt.at.ui.theme.TvingTheme
 
 
 @Serializable
-data object Search
+data object History
 
 @Composable
-fun SearchScreen(
+fun HistoryScreen(
     paddingValues: PaddingValues
-){
+) {
     Column(
         modifier = Modifier.padding(paddingValues)
     ) {
-        Text(text = "Search", fontSize = 24.sp)
+        Text(text = "History", style = TvingTheme.typography.title)
     }
 }

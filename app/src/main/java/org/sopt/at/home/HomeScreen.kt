@@ -1,4 +1,4 @@
-package org.sopt.at.home.screen
+package org.sopt.at.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -67,7 +67,7 @@ fun HomeScreen(
         }
         item {
             HomeContentSection(
-                title = stringResource(R.string.section_top20),
+                subTitle = stringResource(R.string.section_top20),
                 contentsList = top20Contents,
                 withRank = true
             )
@@ -80,7 +80,7 @@ fun HomeScreen(
         }
         item {
             HomeContentSection(
-                title = stringResource(R.string.section_nowlive),
+                subTitle = stringResource(R.string.section_nowlive),
                 contentsList = liveNowContentsList,
                 withRank = false
             )

@@ -1,11 +1,14 @@
 package org.sopt.at.my
 
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.navigation.toRoute
 
-class MyViewModel(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
-    val profile = savedStateHandle.toRoute<My>()
+class MyViewModel() : ViewModel() {
+    private val _userId = mutableStateOf("")
+    val userId: MutableState<String> get() = _userId
+
+    fun setUserId(id: String) {
+        _userId.value = id
+    }
 }

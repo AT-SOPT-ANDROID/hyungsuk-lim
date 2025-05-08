@@ -1,6 +1,8 @@
 package org.sopt.at.signup
 
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
@@ -11,8 +13,8 @@ class SignUpViewModel : ViewModel() {
     private val _pw = mutableStateOf("")
     val pw: MutableState<String> get() = _pw
 
-    private val _step = mutableStateOf(1)
-    val step: MutableState<Int> get() = _step
+    private val _step = mutableIntStateOf(1)
+    val step: MutableIntState get() = _step
 
     private val _isError = mutableStateOf(false)
     val isError: MutableState<Boolean> get() = _isError
@@ -40,12 +42,12 @@ class SignUpViewModel : ViewModel() {
         _pw.value = pw
     }
 
-    fun onNext() {
-        if (_step.value == 1) _step.value = 2
+    fun nextStep() {
+        if (_step.intValue == 1) _step.intValue = 2
     }
 
     fun onPrevious() {
-        if (_step.value == 2) _step.value = 1
+        if (_step.intValue == 2) _step.intValue = 1
     }
 
     fun setIsError(isError: Boolean) {

@@ -17,19 +17,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import org.sopt.at.R
-import org.sopt.at.home.screen.History
-import org.sopt.at.home.screen.Home
-import org.sopt.at.home.screen.Live
-import org.sopt.at.home.screen.Search
-import org.sopt.at.home.screen.Shorts
+import org.sopt.at.history.History
+import org.sopt.at.home.Home
+import org.sopt.at.live.Live
+import org.sopt.at.search.Search
+import org.sopt.at.shorts.Shorts
+import org.sopt.at.ui.theme.TvingTheme
 
 @Composable
 fun BottomNavBar(navController: NavController) {
@@ -95,8 +94,7 @@ fun BottomNavItem(
         )
         Text(
             text = buttonName,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
+            style = TvingTheme.typography.button
         )
     }
 }

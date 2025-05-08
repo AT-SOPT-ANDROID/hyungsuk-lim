@@ -1,24 +1,56 @@
 package org.sopt.at
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.ui.platform.LocalContext
-import org.sopt.at.signin.SignInActivity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import org.sopt.at.component.BottomNavBar
+import org.sopt.at.component.TopBar
+import org.sopt.at.ui.theme.TvingTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val context = LocalContext.current
-            val intent = Intent(context, SignInActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            val navController = rememberNavController()
+            val mainViewModel: MainViewModel = viewModel()
+            val isLogin = mainViewModel.isLogin
+            TvingTheme {
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+                        ),
+                    topBar = {
+                        if (isLogin.value) {
+                            TopBar(
+                                navController = navController,
+                            )
+                        }
+                    },
+                    bottomBar = {
+                        if (isLogin.value) {
+                            BottomNavBar(navController = navController)
+                        }
+                    }
+                ) { innerPadding ->
+                    MainNavHost(
+                        navController = navController,
+                        paddingValues = innerPadding
+                    )
+                }
             }
-            context.startActivity(intent)
-            finish()
         }
     }
 }
