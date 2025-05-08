@@ -9,12 +9,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,20 +31,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.sopt.at.R
 import org.sopt.at.component.TvingCustomTextField
+import org.sopt.at.signin.SignIn
+
+@Serializable
+data object SignUp
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier,
-    onNext: () -> Unit,
-    signUp: () -> Unit,
-    step: Int,
-    signUpViewModel: SignUpViewModel
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
+    val signUpViewModel: SignUpViewModel = viewModel()
     val id = signUpViewModel.id.value
     val password = signUpViewModel.pw.value
     val isError = signUpViewModel.isError.value
+    val step = signUpViewModel.step.intValue
+    val idErrorMessage = stringResource(R.string.sign_up_id_error_msg)
+    val pwErrorMessage = stringResource(R.string.sign_up_pw_error_msg)
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -44,19 +64,60 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    if (step == 2) {
+                        signUpViewModel.setIsError(isError = false)
+                        signUpViewModel.onPrevious()
+                    } else {
+                        navController.navigate(SignIn("", ""))
+                    }
+                },
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = "뒤로가기",
+                    tint = Color.White
+                )
+            }
+        }
         if (step == 1) {
             IdInputScreen(
                 text = id,
                 onValueChange = { signUpViewModel.updateId(it) },
-                onNext = { onNext() },
+                onNext = {
+                    if (signUpViewModel.isValidId(id)) {
+                        signUpViewModel.setIsError(isError = false)
+                        signUpViewModel.nextStep()
+                    } else {
+                        signUpViewModel.setIsError(isError = true)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(idErrorMessage)
+                        }
+                    }
+                },
                 isError = isError,
             )
         } else if (step == 2) {
             PasswordInputScreen(
                 text = password,
                 onValueChange = { signUpViewModel.updatePw(it) },
-                onSignUp = { signUp() },
+                onSignUp = {
+                    if (signUpViewModel.isValidPw(password)) {
+                        navController.navigate(SignIn(userId = id, userPw = password))
+                    } else {
+                        signUpViewModel.setIsError(isError = true)
+                        scope.launch {
+                            snackbarHostState.showSnackbar(pwErrorMessage)
+                        }
+                    }
+                },
                 isError = isError,
                 signUpViewModel = signUpViewModel
             )

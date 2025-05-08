@@ -1,6 +1,6 @@
 package org.sopt.at.my
 
-import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,28 +10,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.serialization.Serializable
-import org.sopt.at.signin.SignInActivity
+import org.sopt.at.MainViewModel
 
 @Serializable
-data class My(
-    val userId: String
-)
+data object My
 
 @Composable
 fun MyScreen(
     paddingValues: PaddingValues,
+    navigateToSignIn: (id: String, password: String) -> Unit,
+    viewModel: MyViewModel = viewModel()
 ) {
-    val viewModel: MyViewModel = viewModel()
-    val context = LocalContext.current
-    val profile = remember { viewModel.profile }
+    val activity = LocalActivity.current
+    val mainViewModel: MainViewModel =
+        viewModel(viewModelStoreOwner = activity as ViewModelStoreOwner)
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -39,13 +38,11 @@ fun MyScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(profile.userId)
+        Text(viewModel.userId.value)
         Button(
             onClick = {
-                val intent = Intent(context, SignInActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                context.startActivity(intent)
+                mainViewModel.logout()
+                navigateToSignIn("", "")
             },
             border = BorderStroke(width = 1.dp, color = Color.LightGray)
         ) {

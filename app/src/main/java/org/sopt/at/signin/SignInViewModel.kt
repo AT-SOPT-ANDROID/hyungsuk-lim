@@ -4,13 +4,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.toRoute
 
-class SignInViewModel : ViewModel() {
-    var idState by mutableStateOf("")
-        private set
-    var pwState by mutableStateOf("")
-        private set
+class SignInViewModel(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
+    private val user = savedStateHandle.toRoute<SignIn>()
 
     var signInResult by mutableStateOf<SignInResult?>(null)
         private set
@@ -24,11 +25,6 @@ class SignInViewModel : ViewModel() {
     private val _visibility = mutableStateOf(false)
     val visibility: MutableState<Boolean> get() = _visibility
 
-    fun setUserInfo(id: String, pw: String) {
-        idState = id
-        pwState = pw
-    }
-
     fun updateId(id: String) {
         _id.value = id
     }
@@ -39,8 +35,8 @@ class SignInViewModel : ViewModel() {
 
     fun signIn() {
         signInResult = when {
-            _id.value != idState -> SignInResult.InvalidId
-            _pw.value != pwState -> SignInResult.InvalidPw
+            _id.value != user.userId -> SignInResult.InvalidId
+            _pw.value != user.userPw -> SignInResult.InvalidPw
             else -> SignInResult.Success(_id.value)
         }
     }

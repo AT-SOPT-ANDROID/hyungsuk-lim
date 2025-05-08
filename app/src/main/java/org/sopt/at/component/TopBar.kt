@@ -25,7 +25,6 @@ import org.sopt.at.my.My
 @Composable
 fun TopBar(
     navController: NavController,
-    userId: String
 ) {
     Row(
         modifier = Modifier
@@ -51,7 +50,7 @@ fun TopBar(
             contentDescription = "MY Profile",
             modifier = Modifier
                 .height(24.dp)
-                .clickable { navController.navigate(My(userId)) }
+                .clickable { navController.navigate(My) }
         )
     }
 }
@@ -59,5 +58,5 @@ fun TopBar(
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    TopBar(rememberNavController(), "userID")
+    TopBar(rememberNavController())
 }
