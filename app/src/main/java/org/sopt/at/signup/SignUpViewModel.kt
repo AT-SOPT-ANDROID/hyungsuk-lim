@@ -34,23 +34,9 @@ class SignUpViewModel : ViewModel() {
     var signUpResult by mutableStateOf<SignUpResult?>(null)
         private set
 
-    private val _isError = mutableStateOf(false)
-    val isError: MutableState<Boolean> get() = _isError
 
     private val _visibility = mutableStateOf(false)
     val visibility: MutableState<Boolean> get() = _visibility
-
-    val isValidId = { id: String ->
-        id.matches(Regex("^[a-z0-9]{6,12}$")) &&
-                id.contains(Regex("[a-z]"))
-    }
-
-    val isValidPw = { pw: String ->
-        pw.length in 8..15 &&
-                pw.contains(Regex("[A-Za-z]")) &&
-                pw.contains(Regex("[0-9]")) &&
-                pw.contains(Regex("[^A-Za-z0-9]"))
-    }
 
     fun updateId(id: String) {
         _id.value = id
@@ -78,10 +64,6 @@ class SignUpViewModel : ViewModel() {
         } else {
             SignUpStep.Password
         }
-    }
-
-    fun setIsError(isError: Boolean) {
-        _isError.value = isError
     }
 
     fun switchVisibility() {

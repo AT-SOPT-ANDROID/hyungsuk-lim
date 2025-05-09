@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,10 +54,9 @@ fun SignUpScreen(
     val id = signUpViewModel.id.value
     val password = signUpViewModel.pw.value
     val nickname = signUpViewModel.nickname.value
-    val isError = signUpViewModel.isError.value
     val signUpStep = signUpViewModel.signUpStep
-    val idErrorMessage = stringResource(R.string.sign_up_id_error_msg)
-    val pwErrorMessage = stringResource(R.string.sign_up_pw_error_msg)
+    val passwordVisibility = signUpViewModel.visibility.value
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val signUpResult = signUpViewModel.signUpResult
@@ -120,7 +118,6 @@ fun SignUpScreen(
                                 signUpViewModel.requestSignUp()
 
                             else -> {
-                                signUpViewModel.setIsError(isError = false)
                                 signUpViewModel.nextStep()
                             }
                         }
@@ -131,13 +128,12 @@ fun SignUpScreen(
                                 navController.navigate(SignIn("", ""))
 
                             else -> {
-                                signUpViewModel.setIsError(isError = false)
                                 signUpViewModel.onPrevious()
                             }
                         }
                     },
-                    isError = isError,
-                    signUpViewModel = signUpViewModel,
+                    visibility = passwordVisibility,
+                    switchVisibility = { signUpViewModel.switchVisibility() }
                 )
             }
         }
@@ -151,8 +147,8 @@ fun InputScreen(
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
     onClickBack: () -> Unit,
-    isError: Boolean,
-    signUpViewModel: SignUpViewModel,
+    visibility: Boolean,
+    switchVisibility: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -207,10 +203,10 @@ fun InputScreen(
             focusedBorderColor = Color.LightGray,
             cursorColor = Color.White,
             roundedCornerShape = RoundedCornerShape(2.dp),
-            isVisible = signUpViewModel.visibility.value,
+            isVisible = visibility,
             switchVisibility = {
                 if (signUpStep == SignUpStep.Password) {
-                    signUpViewModel.switchVisibility()
+                    switchVisibility()
                 }
             }
         )
@@ -220,11 +216,7 @@ fun InputScreen(
                 SignUpStep.Password -> stringResource(R.string.pw_description)
                 SignUpStep.Nickname -> stringResource(R.string.nickname_description)
             },
-            color = if (isError) {
-                Color.Red
-            } else {
-                Color.Gray
-            },
+            color = Color.Gray,
             fontSize = 12.sp
         )
         Spacer(modifier = Modifier.weight(5f))
@@ -249,130 +241,6 @@ fun InputScreen(
                     SignUpStep.Nickname -> stringResource(R.string.sign_up_text)
                 }, fontSize = 14.sp
             )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-@Composable
-fun IdInputScreen(
-    text: String,
-    onValueChange: (String) -> Unit,
-    onNext: () -> Unit,
-    isError: Boolean,
-) {
-    Column(
-        modifier = Modifier
-            .width(480.dp)
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.sign_up_id_title),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(bottom = 36.dp),
-            color = Color.White
-        )
-        TvingCustomTextField(
-            value = text,
-            label = stringResource(R.string.id_text),
-            onValueChange = onValueChange,
-            focusedBorderColor = Color.LightGray,
-            cursorColor = Color.White,
-            roundedCornerShape = RoundedCornerShape(2.dp),
-            isVisible = true,
-            switchVisibility = { }
-        )
-        Text(
-            text = stringResource(R.string.id_description),
-            color = if (isError) {
-                Color.Red
-            } else {
-                Color.Gray
-            },
-            fontSize = 12.sp
-        )
-        Spacer(modifier = Modifier.weight(5f))
-        Button(
-            onClick = onNext,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(2.dp))
-                .height(52.dp),
-            shape = RoundedCornerShape(2.dp),
-            enabled = text != "",
-            colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = Color.Black,
-                disabledContentColor = Color.White,
-                containerColor = Color.White,
-                contentColor = Color.Black,
-            ),
-            border = BorderStroke(0.5.dp, Color.Gray)
-        ) {
-            Text(text = stringResource(R.string.next_button), fontSize = 14.sp)
-        }
-        Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-@Composable
-fun PasswordInputScreen(
-    text: String,
-    onValueChange: (String) -> Unit,
-    onSignUp: () -> Unit,
-    isError: Boolean,
-    signUpViewModel: SignUpViewModel
-) {
-    Column(
-        modifier = Modifier
-            .width(440.dp)
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.sign_up_pw_title),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(bottom = 36.dp),
-            color = Color.White
-        )
-        TvingCustomTextField(
-            value = text,
-            onValueChange = onValueChange,
-            label = stringResource(R.string.pw_text),
-            focusedBorderColor = Color.LightGray,
-            cursorColor = Color.White,
-            roundedCornerShape = RoundedCornerShape(2.dp),
-            isVisible = signUpViewModel.visibility.value,
-            switchVisibility = { signUpViewModel.switchVisibility() }
-        )
-        Text(
-            text = stringResource(R.string.pw_description),
-            color = if (isError) {
-                Color.Red
-            } else {
-                Color.Gray
-            },
-            fontSize = 12.sp
-        )
-        Spacer(modifier = Modifier.weight(5f))
-        Button(
-            onClick = onSignUp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
-            shape = RoundedCornerShape(2.dp),
-            enabled = text != "",
-            colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = Color.Black,
-                disabledContentColor = Color.White,
-                containerColor = Color.White,
-                contentColor = Color.Black,
-            ),
-            border = BorderStroke(0.5.dp, Color.Gray)
-        ) {
-            Text(text = stringResource(R.string.next_button), fontSize = 14.sp)
         }
         Spacer(modifier = Modifier.weight(1f))
     }
