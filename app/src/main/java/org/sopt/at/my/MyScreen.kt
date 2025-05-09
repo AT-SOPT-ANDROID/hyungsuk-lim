@@ -38,7 +38,7 @@ fun MyScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(viewModel.userId.value)
+        Text(viewModel.userId.value.toString())
         Button(
             onClick = {
                 mainViewModel.logout()

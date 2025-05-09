@@ -77,6 +77,7 @@ fun SignUpScreen(
 
             else -> {}
         }
+        signUpViewModel.resetSignUpResult()
     }
 
     Scaffold(

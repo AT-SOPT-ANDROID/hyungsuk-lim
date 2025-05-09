@@ -59,16 +59,14 @@ fun SignInScreen(
         viewModel(viewModelStoreOwner = activity as ViewModelStoreOwner)
     val id = signInViewModel.id.value
     val password = signInViewModel.pw.value
+    val signInResult = signInViewModel.signInResult
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val mismatchId = stringResource(R.string.sign_in_id_snackbar)
-    val mismatchPw = stringResource(R.string.sign_in_pw_snackbar)
-    val signInResult = signInViewModel.signInResult
 
     LaunchedEffect(signInResult) {
         when (signInResult) {
-            is SignInResult.InvalidId -> snackbarHostState.showSnackbar(mismatchId)
-            is SignInResult.InvalidPw -> snackbarHostState.showSnackbar(mismatchPw)
+            is SignInResult.InvalidId -> snackbarHostState.showSnackbar(signInResult.errMsg)
+            is SignInResult.InvalidPw -> snackbarHostState.showSnackbar(signInResult.errMsg)
             is SignInResult.Success -> {
                 myViewModel.setUserId(signInResult.userId)
                 mainViewModel.login()
@@ -128,7 +126,7 @@ fun SignInScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
                     onClick = {
-                        signInViewModel.signIn()
+                        signInViewModel.requestSignIn()
                     },
                     enabled = id.isNotBlank() && password.isNotBlank(),
                     modifier = Modifier

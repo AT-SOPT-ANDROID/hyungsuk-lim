@@ -50,6 +50,10 @@ class SignUpViewModel : ViewModel() {
         _nickname.value = nickname
     }
 
+    fun resetSignUpResult() {
+        signUpResult = null
+    }
+
     fun nextStep() {
         signUpStep = if (signUpStep == SignUpStep.Id) {
             SignUpStep.Password

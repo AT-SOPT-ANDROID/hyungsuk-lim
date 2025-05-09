@@ -1,6 +1,8 @@
 package org.sopt.at.service
 
 import org.sopt.at.dto.BaseResponseDto
+import org.sopt.at.signin.RequestSignInDto
+import org.sopt.at.signin.ResponseSignInDto
 import org.sopt.at.signup.RequestSignUpDto
 import org.sopt.at.signup.ResponseSignUpDto
 import retrofit2.Call
@@ -12,4 +14,9 @@ interface AuthService {
     fun requestSignUp(
         @Body requestSignUpDto: RequestSignUpDto
     ): Call<BaseResponseDto<ResponseSignUpDto>>
+
+    @POST("/api/v1/auth/signin")
+    fun requestSignIn(
+        @Body requestSignInDto: RequestSignInDto
+    ): Call<BaseResponseDto<ResponseSignInDto>>
 }
