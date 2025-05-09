@@ -1,10 +1,10 @@
 package org.sopt.at.service
 
 import org.sopt.at.dto.BaseResponseDto
-import org.sopt.at.signin.RequestSignInDto
-import org.sopt.at.signin.ResponseSignInDto
-import org.sopt.at.signup.RequestSignUpDto
-import org.sopt.at.signup.ResponseSignUpDto
+import org.sopt.at.dto.request.RequestSignInDto
+import org.sopt.at.dto.response.ResponseSignInDto
+import org.sopt.at.dto.request.RequestSignUpDto
+import org.sopt.at.dto.response.ResponseSignUpDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

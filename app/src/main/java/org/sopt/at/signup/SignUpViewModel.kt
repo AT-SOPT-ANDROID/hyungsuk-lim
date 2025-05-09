@@ -12,6 +12,8 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.sopt.at.ServicePool
 import org.sopt.at.dto.BaseResponseDto
+import org.sopt.at.dto.request.RequestSignUpDto
+import org.sopt.at.dto.response.ResponseSignUpDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

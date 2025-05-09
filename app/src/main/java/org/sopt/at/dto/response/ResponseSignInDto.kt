@@ -1,4 +1,4 @@
-package org.sopt.at.signin
+package org.sopt.at.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

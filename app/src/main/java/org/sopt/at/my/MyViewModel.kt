@@ -1,8 +1,6 @@
 package org.sopt.at.my
 
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +10,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.sopt.at.ServicePool
 import org.sopt.at.dto.BaseResponseDto
+import org.sopt.at.dto.response.ResponseNicknameDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +20,6 @@ class MyViewModel : ViewModel() {
     val nickname: State<String> get() = _nickname
 
     private val userService by lazy { ServicePool.userService }
-    private lateinit var sharedPreferences: SharedPreferences
 
     fun setUserNickname(nickname: String) {
         _nickname.value = nickname

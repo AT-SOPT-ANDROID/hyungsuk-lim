@@ -1,7 +1,7 @@
 package org.sopt.at.service
 
 import org.sopt.at.dto.BaseResponseDto
-import org.sopt.at.my.ResponseNicknameDto
+import org.sopt.at.dto.response.ResponseNicknameDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
