@@ -5,6 +5,9 @@
     <string name="title_activity_my">MyActivity</string>
     <string name="title_activity_home">HomeActivity</string>
 
+    <string name="tving_preference_key">AT_SOPT_PREFERENCE</string>
+    <string name="access_token_key">userId</string>
+
     <string name="sing_in_title">TVING ID 로그인</string>
     <string name="sign_in_button">로그인하기</string>
     <string name="sign_in_id_snackbar">아이디가 일치하지 않습니다.</string>

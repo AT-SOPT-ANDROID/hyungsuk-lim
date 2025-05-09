@@ -1,10 +1,12 @@
 package org.sopt.at.signin
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -16,7 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignInViewModel : ViewModel() {
+class SignInViewModel(
+    private var sharedPreferences: SharedPreferences
+) : ViewModel() {
 
     private val authService by lazy { ServicePool.authService }
 
@@ -49,7 +53,7 @@ class SignInViewModel : ViewModel() {
     }
 
     fun requestSignIn() {
-        authService.requestSignIn(
+        authService.postSignIn(
             requestSignInDto = RequestSignInDto(
                 id = id.value,
                 password = pw.value
@@ -61,10 +65,13 @@ class SignInViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     Log.i("is", "Success")
-                    signInResult = response.body()?.data?.let {
-                        SignInResult.Success(
-                            it.userId,
-                        )
+                    val userId = response.body()?.data?.userId
+                    if (userId != null) {
+                        signInResult = SignInResult.Success(userId)
+
+                        sharedPreferences.edit() {
+                            putInt("userId", userId)
+                        }
                     }
                 } else {
                     val errorBody: JsonElement =
@@ -75,7 +82,6 @@ class SignInViewModel : ViewModel() {
                     } else {
                         SignInResult.InvalidPw(errorMsg)
                     }
-                    Log.e("error", response.message().toString())
                     Log.e("error", errorMsg)
                 }
             }

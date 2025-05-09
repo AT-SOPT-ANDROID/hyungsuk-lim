@@ -75,7 +75,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun requestSignUp() {
-        authService.requestSignUp(
+        authService.postSignUp(
             requestSignUpDto = RequestSignUpDto(
                 id = id.value,
                 password = pw.value,
