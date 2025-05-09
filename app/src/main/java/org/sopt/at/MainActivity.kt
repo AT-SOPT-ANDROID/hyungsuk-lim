@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -25,6 +28,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val mainViewModel: MainViewModel = viewModel()
             val isLogin = mainViewModel.isLogin
+            val snackbarHostState = remember { SnackbarHostState() }
             TvingTheme {
                 Scaffold(
                     modifier = Modifier
@@ -43,7 +47,8 @@ class MainActivity : ComponentActivity() {
                         if (isLogin.value) {
                             BottomNavBar(navController = navController)
                         }
-                    }
+                    },
+                    snackbarHost = { SnackbarHost(snackbarHostState) }
                 ) { innerPadding ->
                     MainNavHost(
                         navController = navController,

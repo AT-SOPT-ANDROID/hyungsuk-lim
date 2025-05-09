@@ -1,5 +1,6 @@
 package org.sopt.at.signin
 
+import android.content.Context
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +40,6 @@ import kotlinx.serialization.Serializable
 import org.sopt.at.MainViewModel
 import org.sopt.at.R
 import org.sopt.at.component.TvingCustomTextField
-import org.sopt.at.my.MyViewModel
 
 @Serializable
 data class SignIn(
@@ -51,26 +52,32 @@ fun SignInScreen(
     navigateToHome: () -> Unit,
     navigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
-    signInViewModel: SignInViewModel = viewModel(),
 ) {
-    val myViewModel: MyViewModel = viewModel()
+    val context = LocalContext.current
+    val sharedPreferences = remember {
+        context.getSharedPreferences(
+            context.getString(R.string.tving_preference_key),
+            Context.MODE_PRIVATE
+        )
+    }
+    val signInViewModel = remember { SignInViewModel(sharedPreferences) }
+
     val activity = LocalActivity.current
     val mainViewModel: MainViewModel =
         viewModel(viewModelStoreOwner = activity as ViewModelStoreOwner)
     val id = signInViewModel.id.value
     val password = signInViewModel.pw.value
+    val signInResult = signInViewModel.signInResult
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val mismatchId = stringResource(R.string.sign_in_id_snackbar)
-    val mismatchPw = stringResource(R.string.sign_in_pw_snackbar)
-    val signInResult = signInViewModel.signInResult
+
+
 
     LaunchedEffect(signInResult) {
         when (signInResult) {
-            is SignInResult.InvalidId -> snackbarHostState.showSnackbar(mismatchId)
-            is SignInResult.InvalidPw -> snackbarHostState.showSnackbar(mismatchPw)
+            is SignInResult.InvalidId -> snackbarHostState.showSnackbar(signInResult.errMsg)
+            is SignInResult.InvalidPw -> snackbarHostState.showSnackbar(signInResult.errMsg)
             is SignInResult.Success -> {
-                myViewModel.setUserId(signInResult.userId)
                 mainViewModel.login()
                 navigateToHome()
             }
@@ -128,7 +135,7 @@ fun SignInScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Button(
                     onClick = {
-                        signInViewModel.signIn()
+                        signInViewModel.requestSignIn()
                     },
                     enabled = id.isNotBlank() && password.isNotBlank(),
                     modifier = Modifier
